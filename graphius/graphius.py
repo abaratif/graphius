@@ -22,10 +22,6 @@ class Graphius(object):
     """
     def parse(self):
         for node in self.data:
-            print("NODE: id:{} value:{} neighbors:{}".format(
-                node['id'],
-                node['value'],
-                node['children']))
             # Add the node data to nodes dict
             self.nodes[node['id']] = {
                 'value': node['value'],
