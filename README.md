@@ -3,7 +3,11 @@
 Collapse redundant subtrees in a graph.
 
 ## Environment Setup
-Install requirements
+Initialize the virtualenv and install packages
 ```
+    virtualenv VENV
+    source VENV/bin/activate
     pip install -r requirements_dev.txt
 ```
+
+
