@@ -20,15 +20,27 @@ class TestGraphius(unittest.TestCase):
     def tearDown(self):
         """Tear down test fixtures, if any."""
 
-    def test_000_something(self):
-        """Test something."""
+    def test_1_read(self):
+        """Test reading in a graph from hash"""
+        nodes = [
+            {'id': 1, 'value': 'A', 'children': [2, 3]},
+            {'id': 2, 'value': 'B', 'children': []},
+            {'id': 3, 'value': 'C', 'children': [4]},
+            {'id': 4, 'value': 'B', 'children': []}
+        ]
 
-    def test_command_line_interface(self):
-        """Test the CLI."""
-        runner = CliRunner()
-        result = runner.invoke(cli.main)
-        assert result.exit_code == 0
-        assert 'graphius.cli.main' in result.output
-        help_result = runner.invoke(cli.main, ['--help'])
-        assert help_result.exit_code == 0
-        assert '--help  Show this message and exit.' in help_result.output
+        g = graphius.Graphius(nodes)
+        # Test nodes
+        assert(g.nodes[1]['value'] == 'A')
+        # Test mappings
+        assert(list(g.mapping['B']) == [2, 4])
+
+    # def test_command_line_interface(self):
+    #     """Test the CLI."""
+    #     runner = CliRunner()
+    #     result = runner.invoke(cli.main)
+    #     assert result.exit_code == 0
+    #     assert 'graphius.cli.main' in result.output
+    #     help_result = runner.invoke(cli.main, ['--help'])
+    #     assert help_result.exit_code == 0
+    #     assert '--help  Show this message and exit.' in help_result.output
