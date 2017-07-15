@@ -7,6 +7,7 @@
 import unittest
 
 from graphius import graphius
+import pprint
 
 
 class TestGraphius(unittest.TestCase):
@@ -185,6 +186,65 @@ class TestGraphius(unittest.TestCase):
         g.deleteTree(9)
         assert(len(g.nodes) == 9)
         assert(len(g.mapping['C']) == 1)
+
+    def test_10_mergeSubtrees(self):
+        """ Test merging the D->F subtrees in example two """
+        nodes = [
+            {'id': 1, 'value': 'A', 'children': [2, 3]},
+            {'id': 2, 'value': 'B', 'children': []},
+            {'id': 3, 'value': 'C', 'children': [4, 5]},
+            {'id': 4, 'value': 'E', 'children': [6]},
+            {'id': 5, 'value': 'D', 'children': [7]},
+            {'id': 6, 'value': 'G', 'children': []},
+            {'id': 7, 'value': 'F', 'children': []},
+            # Second half
+            {'id': 8, 'value': 'B', 'children': [9]},
+            {'id': 9, 'value': 'C', 'children': [10, 11]},
+            {'id': 10, 'value': 'D', 'children': [12]},
+            {'id': 11, 'value': 'E', 'children': [13]},
+            {'id': 12, 'value': 'F', 'children': []},
+            {'id': 13, 'value': 'X', 'children': []}
+        ]
+        g = graphius.Graphius(nodes)
+        assert(len(g.nodes) == 13)
+        assert(len(g.mapping['F']) == 2)
+        # pprint.pprint(g.nodes)
+        # print("******************")
+        g.mergeSubtrees(10, 5)
+        # pprint.pprint(g.nodes)
+        assert(len(g.nodes) == 11)
+        assert(len(g.mapping['F']) == 1)
+
+    def test_11_checkRedundant(self):
+        """ Test recognizing and deleting
+        the D->F redundant subtree in example two """
+        nodes = [
+            {'id': 1, 'value': 'A', 'children': [2, 3]},
+            {'id': 2, 'value': 'B', 'children': []},
+            {'id': 3, 'value': 'C', 'children': [4, 5]},
+            {'id': 4, 'value': 'E', 'children': [6]},
+            {'id': 5, 'value': 'D', 'children': [7]},
+            {'id': 6, 'value': 'G', 'children': []},
+            {'id': 7, 'value': 'F', 'children': []},
+            # Second half
+            {'id': 8, 'value': 'B', 'children': [9]},
+            {'id': 9, 'value': 'C', 'children': [10, 11]},
+            {'id': 10, 'value': 'D', 'children': [12]},
+            {'id': 11, 'value': 'E', 'children': [13]},
+            {'id': 12, 'value': 'F', 'children': []},
+            {'id': 13, 'value': 'X', 'children': []}
+        ]
+        g = graphius.Graphius(nodes)
+        assert(len(g.nodes) == 13)
+        assert(len(g.mapping['F']) == 2)
+        pprint.pprint(g.nodes)
+        print("******************")
+        g.mergeRedundant()
+        pprint.pprint(g.nodes)
+        assert(len(g.nodes) == 11)
+        assert(len(g.mapping['F']) == 1)
+
+
 
 
     # def test_command_line_interface(self):

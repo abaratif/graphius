@@ -32,34 +32,31 @@ class Graphius(object):
                 self.mapping[node['value']] = set()
             self.mapping[node['value']].add(node['id'])
 
-    # def checkRedundant(self):
-    #     """
-    #         For node values that have multiple IDs according to mapping dict,
-    #         check if they represent the same subtree
-    #     """
-    #     for nodeValue, nodeIds in self.mapping.items():
-    #         print(type(nodeIds))
-    #         if len(nodeIds) > 0:
-    #             nodeIds = list(nodeIds)
-    #             for i in range(len(nodeIds)):
-    #                 for j in range(i + 1, len(nodeIds)):
-    #                     if self.isSameTree(nodeIds[i], nodeIds[j]):
-                            # deleteNode(nodeId)
-                            # print("Found same tree at node {} and node {}".format(nodeIds[i], nodeIds[j]))
+    def mergeRedundant(self):
+        """
+            For node values that have multiple IDs according to mapping dict,
+            check if they represent the same subtree
+        """
+        for nodeValue, nodeIds in self.mapping.items():
+            if len(nodeIds) > 0:
+                nodeIds = list(nodeIds)
+                for i in range(len(nodeIds)):
+                    for j in range(i + 1, len(nodeIds)):
+                        if self.isSameTree(nodeIds[i], nodeIds[j]):
+                            self.mergeSubtrees(nodeIds[i], nodeIds[j])
 
-
-    # def deleteNode(self, nodeId):
-    #     """
-    #         Given a nodeId, delete all references to it
-    #     """
-    #     nodeValue = self.nodes[nodeId]['value']
-    #
-    #     # Remove from mappings dict
-    #     if nodeValue in self.mapping:
-    #         if nodeId in self.mapping[nodeValue]:
-    #             self.mapping[nodeValue].remove(nodeId)
-    #     # Remove from nodes dict
-    #     del self.nodes[nodeId]
+    def mergeSubtrees(self, root1Id, root2Id):
+        """
+            Given roots of two identical subtrees,
+            delete subtree at root2 and replace it with subtree at root1
+        """
+        print("Call to mergeSubtrees for ids {} and {}".format(root1Id, root2Id))
+        self.deleteTree(root2Id)
+        # Search for any refs to root2Id, update to root1Id
+        for nodeId, data in self.nodes.items():
+            if root2Id in data['neighbors']:
+                data['neighbors'].remove(root2Id)
+                data['neighbors'].add(root1Id)
 
     def deleteTree(self, rootId):
         """
