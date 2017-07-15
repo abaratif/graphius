@@ -208,10 +208,9 @@ class TestGraphius(unittest.TestCase):
         g = graphius.Graphius(nodes)
         assert(len(g.nodes) == 13)
         assert(len(g.mapping['F']) == 2)
-        # pprint.pprint(g.nodes)
-        # print("******************")
+
         g.mergeSubtrees(10, 5)
-        # pprint.pprint(g.nodes)
+
         assert(len(g.nodes) == 11)
         assert(len(g.mapping['F']) == 1)
 
@@ -237,10 +236,9 @@ class TestGraphius(unittest.TestCase):
         g = graphius.Graphius(nodes)
         assert(len(g.nodes) == 13)
         assert(len(g.mapping['F']) == 2)
-        pprint.pprint(g.nodes)
-        print("******************")
+
         g.mergeRedundant()
-        pprint.pprint(g.nodes)
+
         assert(len(g.nodes) == 11)
         assert(len(g.mapping['F']) == 1)
 

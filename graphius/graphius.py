@@ -100,7 +100,7 @@ class Graphius(object):
                 # For identical trees, A list of nieghbors
                 # in sorted (based on value) order:
                 # Should have same length
-                # At each position, values are same (verify recursively)\
+                # At each position, values are same (verify recursively)
                 for i in range(len(node1Children)):
                     if not self.isSameTree(node1Children[i], node2Children[i]):
                         return False
