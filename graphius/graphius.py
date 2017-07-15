@@ -32,6 +32,53 @@ class Graphius(object):
                 self.mapping[node['value']] = set()
             self.mapping[node['value']].add(node['id'])
 
+    # def checkRedundant(self):
+    #     """
+    #         For node values that have multiple IDs according to mapping dict,
+    #         check if they represent the same subtree
+    #     """
+    #     for nodeValue, nodeIds in self.mapping.items():
+    #         print(type(nodeIds))
+    #         if len(nodeIds) > 0:
+    #             nodeIds = list(nodeIds)
+    #             for i in range(len(nodeIds)):
+    #                 for j in range(i + 1, len(nodeIds)):
+    #                     if self.isSameTree(nodeIds[i], nodeIds[j]):
+                            # deleteNode(nodeId)
+                            # print("Found same tree at node {} and node {}".format(nodeIds[i], nodeIds[j]))
+
+
+    # def deleteNode(self, nodeId):
+    #     """
+    #         Given a nodeId, delete all references to it
+    #     """
+    #     nodeValue = self.nodes[nodeId]['value']
+    #
+    #     # Remove from mappings dict
+    #     if nodeValue in self.mapping:
+    #         if nodeId in self.mapping[nodeValue]:
+    #             self.mapping[nodeValue].remove(nodeId)
+    #     # Remove from nodes dict
+    #     del self.nodes[nodeId]
+
+    def deleteTree(self, rootId):
+        """
+            Given the root of a subtree as a node Id, delete that subtree
+        """
+        if rootId not in self.nodes:
+            return
+        # root exists in graph
+        for neighborId in list(self.nodes[rootId]['neighbors']):
+            # Recursively call delete operation
+            self.deleteTree(neighborId)
+        # Delete the current node after having deleted all children recursively
+        rootValue = self.nodes[rootId]['value']
+        # Remove from mappings dict
+        if rootValue in self.mapping:
+            if rootId in self.mapping[rootValue]:
+                self.mapping[rootValue].remove(rootId)
+        del self.nodes[rootId]
+
     def isSameTree(self, nodeId1, nodeId2):
         """
             Given two nodes, determine if they represent the same subtree

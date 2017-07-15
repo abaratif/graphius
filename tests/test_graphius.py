@@ -146,6 +146,47 @@ class TestGraphius(unittest.TestCase):
         g = graphius.Graphius(nodes)
         assert(g.isSameTree(1, 7) is False)
 
+    def test_8_deleteTree(self):
+        """ Test deletion of a subtree of a single node """
+        nodes = [
+            # First subtree
+            {'id': 1, 'value': 'A', 'children': []},
+            {'id': 2, 'value': 'A', 'children': []}
+        ]
+        g = graphius.Graphius(nodes)
+        assert(g.mapping['A'] == set([1, 2]))
+        g.deleteTree(2)
+        assert(g.mapping['A'] == set([1]))  # Verify update to mapping dict
+        # Verify nodes dict updated
+        result = [
+            {'id': 1, 'value': 'A', 'children': []}
+        ]
+        assert(len(g.nodes) == 1)
+
+    def test_9_deleteTree(self):
+        """ Test deletion of a subtree of size 3 """
+        nodes = [
+            # First subtree
+            {'id': 1, 'value': 'A', 'children': [2, 3, 4]},
+            {'id': 2, 'value': 'B', 'children': []},
+            {'id': 3, 'value': 'C', 'children': [5, 6]},
+            {'id': 4, 'value': 'D', 'children': []},
+            {'id': 5, 'value': 'E', 'children': []},
+            {'id': 6, 'value': 'F', 'children': []},
+            # Second subtree
+            {'id': 7, 'value': 'A', 'children': [8, 9, 10]},
+            {'id': 8, 'value': 'B', 'children': []},
+            {'id': 9, 'value': 'C', 'children': [11, 12]},
+            {'id': 10, 'value': 'D', 'children': []},
+            {'id': 11, 'value': 'E', 'children': []},
+            {'id': 12, 'value': 'Z', 'children': []}
+        ]
+        g = graphius.Graphius(nodes)
+        g.deleteTree(9)
+        assert(len(g.nodes) == 9)
+        assert(len(g.mapping['C']) == 1)
+
+
     # def test_command_line_interface(self):
     #     """Test the CLI."""
     #     runner = CliRunner()
