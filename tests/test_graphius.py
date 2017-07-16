@@ -147,100 +147,192 @@ class TestGraphius(unittest.TestCase):
         g = graphius.Graphius(nodes)
         assert(g.isSameTree(1, 7) is False)
 
-    def test_8_deleteTree(self):
-        """ Test deletion of a subtree of a single node """
-        nodes = [
-            # First subtree
-            {'id': 1, 'value': 'A', 'children': []},
-            {'id': 2, 'value': 'A', 'children': []}
-        ]
-        g = graphius.Graphius(nodes)
-        assert(g.mapping['A'] == set([1, 2]))
-        g.deleteTree(2)
-        assert(g.mapping['A'] == set([1]))  # Verify update to mapping dict
-        # Verify nodes dict updated
-        result = [
-            {'id': 1, 'value': 'A', 'children': []}
-        ]
-        assert(len(g.nodes) == 1)
+    # def test_8_deleteTree(self):
+    #     """ Test deletion of a subtree of a single node """
+    #     nodes = [
+    #         # First subtree
+    #         {'id': 1, 'value': 'A', 'children': []},
+    #         {'id': 2, 'value': 'A', 'children': []}
+    #     ]
+    #     g = graphius.Graphius(nodes)
+    #     assert(g.mapping['A'] == set([1, 2]))
+    #     g.deleteTree(2)
+    #     assert(g.mapping['A'] == set([1]))  # Verify update to mapping dict
+    #     # Verify nodes dict updated
+    #     result = [
+    #         {'id': 1, 'value': 'A', 'children': []}
+    #     ]
+    #     assert(len(g.nodes) == 1)
+    #
+    # def test_9_deleteTree(self):
+    #     """ Test deletion of a subtree of size 3 """
+    #     nodes = [
+    #         # First subtree
+    #         {'id': 1, 'value': 'A', 'children': [2, 3, 4]},
+    #         {'id': 2, 'value': 'B', 'children': []},
+    #         {'id': 3, 'value': 'C', 'children': [5, 6]},
+    #         {'id': 4, 'value': 'D', 'children': []},
+    #         {'id': 5, 'value': 'E', 'children': []},
+    #         {'id': 6, 'value': 'F', 'children': []},
+    #         # Second subtree
+    #         {'id': 7, 'value': 'A', 'children': [8, 9, 10]},
+    #         {'id': 8, 'value': 'B', 'children': []},
+    #         {'id': 9, 'value': 'C', 'children': [11, 12]},
+    #         {'id': 10, 'value': 'D', 'children': []},
+    #         {'id': 11, 'value': 'E', 'children': []},
+    #         {'id': 12, 'value': 'Z', 'children': []}
+    #     ]
+    #     g = graphius.Graphius(nodes)
+    #     g.deleteTree(9)
+    #     assert(len(g.nodes) == 9)
+    #     assert(len(g.mapping['C']) == 1)
+    #
+    # def test_10_mergeSubtrees(self):
+    #     """ Test merging the D->F subtrees in example two """
+    #     nodes = [
+    #         {'id': 1, 'value': 'A', 'children': [2, 3]},
+    #         {'id': 2, 'value': 'B', 'children': []},
+    #         {'id': 3, 'value': 'C', 'children': [4, 5]},
+    #         {'id': 4, 'value': 'E', 'children': [6]},
+    #         {'id': 5, 'value': 'D', 'children': [7]},
+    #         {'id': 6, 'value': 'G', 'children': []},
+    #         {'id': 7, 'value': 'F', 'children': []},
+    #         # Second half
+    #         {'id': 8, 'value': 'B', 'children': [9]},
+    #         {'id': 9, 'value': 'C', 'children': [10, 11]},
+    #         {'id': 10, 'value': 'D', 'children': [12]},
+    #         {'id': 11, 'value': 'E', 'children': [13]},
+    #         {'id': 12, 'value': 'F', 'children': []},
+    #         {'id': 13, 'value': 'X', 'children': []}
+    #     ]
+    #     g = graphius.Graphius(nodes)
+    #     assert(len(g.nodes) == 13)
+    #     assert(len(g.mapping['F']) == 2)
+    #
+    #     g.mergeSubtrees(10, 5)
+    #
+    #     assert(len(g.nodes) == 11)
+    #     assert(len(g.mapping['F']) == 1)
 
-    def test_9_deleteTree(self):
-        """ Test deletion of a subtree of size 3 """
+    # def test_11_checkRedundant(self):
+    #     """ Test recognizing and deleting
+    #     the D->F redundant subtree in example two """
+    #     nodes = [
+    #         {'id': 1, 'value': 'A', 'children': [2, 3]},
+    #         {'id': 2, 'value': 'B', 'children': []},
+    #         {'id': 3, 'value': 'C', 'children': [4, 5]},
+    #         {'id': 4, 'value': 'E', 'children': [6]},
+    #         {'id': 5, 'value': 'D', 'children': [7]},
+    #         {'id': 6, 'value': 'G', 'children': []},
+    #         {'id': 7, 'value': 'F', 'children': []},
+    #         # Second half
+    #         {'id': 8, 'value': 'B', 'children': [9]},
+    #         {'id': 9, 'value': 'C', 'children': [10, 11]},
+    #         {'id': 10, 'value': 'D', 'children': [12]},
+    #         {'id': 11, 'value': 'E', 'children': [13]},
+    #         {'id': 12, 'value': 'F', 'children': []},
+    #         {'id': 13, 'value': 'X', 'children': []}
+    #     ]
+    #     g = graphius.Graphius(nodes)
+    #     assert(len(g.nodes) == 13)
+    #     assert(len(g.mapping['F']) == 2)
+    #
+    #     g.mergeRedundant()
+    #
+    #     assert(len(g.nodes) == 11)
+    #     assert(len(g.mapping['F']) == 1)
+    #
+    # def test_12_mergeSubtrees(self):
+    #     """ Manually merge example 1 in multiple steps """
+    #     nodes = [
+    #         {'id': 1, 'value': 'A', 'children': [2, 3]},
+    #         {'id': 2, 'value': 'B', 'children': []},
+    #         {'id': 3, 'value': 'C', 'children': [4, 5]},
+    #         {'id': 4, 'value': 'D', 'children': [6]},
+    #         {'id': 5, 'value': 'E', 'children': [7]},
+    #         {'id': 7, 'value': 'G', 'children': []},
+    #         {'id': 6, 'value': 'F', 'children': []},
+    #         # Second half
+    #         {'id': 8, 'value': 'H', 'children': [9]},
+    #         {'id': 9, 'value': 'C', 'children': [10, 11]},
+    #         {'id': 10, 'value': 'D', 'children': [12]},
+    #         {'id': 11, 'value': 'E', 'children': [13]},
+    #         {'id': 12, 'value': 'F', 'children': []},
+    #         {'id': 13, 'value': 'G', 'children': []}
+    #     ]
+    #     g = graphius.Graphius(nodes)
+    #     assert(len(g.nodes) == 13)
+    #     assert(len(g.mapping['F']) == 2)
+    #     print("*****")
+    #     pprint.pprint(g.nodes)
+    #
+    #     g.mergeSubtrees(7, 13)
+    #     print("*****")
+    #     pprint.pprint(g.nodes)
+    #
+    #     g.mergeSubtrees(4, 10)
+    #     print("*****")
+    #     pprint.pprint(g.nodes)
+    #     # Issue here, graphs we want to merge now overlap
+    #
+    #     g.mergeSubtrees(3, 9)
+    #     print("*****")
+    #     pprint.pprint(g.nodes)
+    #     # assert(len(g.nodes) == 8)
+    #     # assert(len(g.mapping['C']) == 1)
+    #     # assert(g.nodes['A']['neighbors'] == set(2, 3))
+    #     # assert(g.nodes['H']['neighbors'] == set(3))
+    #     # assert(len(g.mapping['F']) == 1)
+    #     # assert(len(g.mapping['G']) == 1)
+
+    def test_13_leafPaths(self):
+        """ Find leaf paths from Node 1 {1: A} in example 1 """
         nodes = [
-            # First subtree
-            {'id': 1, 'value': 'A', 'children': [2, 3, 4]},
+            {'id': 1, 'value': 'A', 'children': [2, 3]},
             {'id': 2, 'value': 'B', 'children': []},
-            {'id': 3, 'value': 'C', 'children': [5, 6]},
-            {'id': 4, 'value': 'D', 'children': []},
-            {'id': 5, 'value': 'E', 'children': []},
+            {'id': 3, 'value': 'C', 'children': [4, 5]},
+            {'id': 4, 'value': 'D', 'children': [6]},
+            {'id': 5, 'value': 'E', 'children': [7]},
+            {'id': 7, 'value': 'G', 'children': []},
             {'id': 6, 'value': 'F', 'children': []},
-            # Second subtree
-            {'id': 7, 'value': 'A', 'children': [8, 9, 10]},
-            {'id': 8, 'value': 'B', 'children': []},
-            {'id': 9, 'value': 'C', 'children': [11, 12]},
-            {'id': 10, 'value': 'D', 'children': []},
-            {'id': 11, 'value': 'E', 'children': []},
-            {'id': 12, 'value': 'Z', 'children': []}
-        ]
-        g = graphius.Graphius(nodes)
-        g.deleteTree(9)
-        assert(len(g.nodes) == 9)
-        assert(len(g.mapping['C']) == 1)
-
-    def test_10_mergeSubtrees(self):
-        """ Test merging the D->F subtrees in example two """
-        nodes = [
-            {'id': 1, 'value': 'A', 'children': [2, 3]},
-            {'id': 2, 'value': 'B', 'children': []},
-            {'id': 3, 'value': 'C', 'children': [4, 5]},
-            {'id': 4, 'value': 'E', 'children': [6]},
-            {'id': 5, 'value': 'D', 'children': [7]},
-            {'id': 6, 'value': 'G', 'children': []},
-            {'id': 7, 'value': 'F', 'children': []},
             # Second half
-            {'id': 8, 'value': 'B', 'children': [9]},
+            {'id': 8, 'value': 'H', 'children': [9]},
             {'id': 9, 'value': 'C', 'children': [10, 11]},
             {'id': 10, 'value': 'D', 'children': [12]},
             {'id': 11, 'value': 'E', 'children': [13]},
             {'id': 12, 'value': 'F', 'children': []},
-            {'id': 13, 'value': 'X', 'children': []}
+            {'id': 13, 'value': 'G', 'children': []}
         ]
         g = graphius.Graphius(nodes)
-        assert(len(g.nodes) == 13)
-        assert(len(g.mapping['F']) == 2)
+        result = [
+                    ['A', 'B'],
+                    ['A', 'C', 'D', 'F'],
+                    ['A', 'C', 'E', 'G']]
+        assert(g.leafPaths(1) == result)
 
-        g.mergeSubtrees(10, 5)
-
-        assert(len(g.nodes) == 11)
-        assert(len(g.mapping['F']) == 1)
-
-    def test_11_checkRedundant(self):
-        """ Test recognizing and deleting
-        the D->F redundant subtree in example two """
+    def test_14_leafPaths(self):
+        """ Find leaf paths from Node 8 {8: H} in example 1 """
         nodes = [
             {'id': 1, 'value': 'A', 'children': [2, 3]},
             {'id': 2, 'value': 'B', 'children': []},
             {'id': 3, 'value': 'C', 'children': [4, 5]},
-            {'id': 4, 'value': 'E', 'children': [6]},
-            {'id': 5, 'value': 'D', 'children': [7]},
-            {'id': 6, 'value': 'G', 'children': []},
-            {'id': 7, 'value': 'F', 'children': []},
+            {'id': 4, 'value': 'D', 'children': [6]},
+            {'id': 5, 'value': 'E', 'children': [7]},
+            {'id': 7, 'value': 'G', 'children': []},
+            {'id': 6, 'value': 'F', 'children': []},
             # Second half
-            {'id': 8, 'value': 'B', 'children': [9]},
+            {'id': 8, 'value': 'H', 'children': [9]},
             {'id': 9, 'value': 'C', 'children': [10, 11]},
             {'id': 10, 'value': 'D', 'children': [12]},
             {'id': 11, 'value': 'E', 'children': [13]},
             {'id': 12, 'value': 'F', 'children': []},
-            {'id': 13, 'value': 'X', 'children': []}
+            {'id': 13, 'value': 'G', 'children': []}
         ]
         g = graphius.Graphius(nodes)
-        assert(len(g.nodes) == 13)
-        assert(len(g.mapping['F']) == 2)
-
-        g.mergeRedundant()
-
-        assert(len(g.nodes) == 11)
-        assert(len(g.mapping['F']) == 1)
+        result = [
+                    ['H', 'C', 'D', 'F'],
+                    ['H', 'C', 'E', 'G']]
+        assert(g.leafPaths(8) == result)
 
 
 

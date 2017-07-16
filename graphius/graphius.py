@@ -42,15 +42,17 @@ class Graphius(object):
                 nodeIds = list(nodeIds)
                 for i in range(len(nodeIds)):
                     for j in range(i + 1, len(nodeIds)):
+
                         if self.isSameTree(nodeIds[i], nodeIds[j]):
                             self.mergeSubtrees(nodeIds[i], nodeIds[j])
+                            # No longer want to consider nodes at i and j
 
     def mergeSubtrees(self, root1Id, root2Id):
         """
             Given roots of two identical subtrees,
             delete subtree at root2 and replace it with subtree at root1
         """
-        print("Call to mergeSubtrees for ids {} and {}".format(root1Id, root2Id))
+        # print("Call to mergeSubtrees for ids {} and {}".format(root1Id, root2Id))
         self.deleteTree(root2Id)
         # Search for any refs to root2Id, update to root1Id
         for nodeId, data in self.nodes.items():
@@ -71,10 +73,44 @@ class Graphius(object):
         # Delete the current node after having deleted all children recursively
         rootValue = self.nodes[rootId]['value']
         # Remove from mappings dict
-        if rootValue in self.mapping:
-            if rootId in self.mapping[rootValue]:
-                self.mapping[rootValue].remove(rootId)
+        # TODO: Decide if this should be removed or not
+        # if rootValue in self.mapping:
+        #     if rootId in self.mapping[rootValue]:
+        #         self.mapping[rootValue].remove(rootId)
         del self.nodes[rootId]
+
+    def leafPaths(self, rootId):
+        """
+            Given a root node Id, return an array of paths to leaf nodes
+            The path is given as a list of node *values*
+        """
+        paths = []
+        self.leafPathsHelper(rootId, paths)
+        return paths
+
+    def leafPathsHelper(self, rootId, paths, currPath=[]):
+        """
+            Given a root node Id, return an array of paths to leaf nodes
+            The path is given as a list of node *values*
+        """
+        if not rootId:
+            # Reached end of path
+            paths.append(currPath)
+            return
+
+        # Continue search
+        if not self.nodes[rootId]['neighbors']:
+            # Leaf node
+            self.leafPathsHelper(
+                                None,
+                                paths,
+                                currPath + [self.nodes[rootId]['value']])
+        else:
+            for neighbor in self.nodes[rootId]['neighbors']:
+                self.leafPathsHelper(
+                                    neighbor,
+                                    paths,
+                                    currPath + [self.nodes[rootId]['value']])
 
     def isSameTree(self, nodeId1, nodeId2):
         """
@@ -83,6 +119,7 @@ class Graphius(object):
             nodeId2: id of second node in comparsion
         """
         # print("isSameTree call for IDs {} and {}".format(nodeId1, nodeId2))
+        assert(nodeId1 in self.nodes and nodeId2 in self.nodes)
         if self.nodes[nodeId1]['value'] == self.nodes[nodeId2]['value']:
             # Compare children, in sorted order based on value
             node1Children = list(
