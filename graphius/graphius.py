@@ -120,6 +120,8 @@ class Graphius(object):
         """
         # print("isSameTree call for IDs {} and {}".format(nodeId1, nodeId2))
         assert(nodeId1 in self.nodes and nodeId2 in self.nodes)
+        if nodeId1 == nodeId2:
+            return True
         if self.nodes[nodeId1]['value'] == self.nodes[nodeId2]['value']:
             # Compare children, in sorted order based on value
             node1Children = list(

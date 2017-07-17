@@ -397,6 +397,26 @@ class TestGraphius(unittest.TestCase):
                     ['H', 'C', 'E', 'X']]
         assert(g.leafPaths(8) == result)
 
+    def test_18_isSameTree(self):
+        """ test isSameTree for two trees with common node
+        (test fix for same node) """
+        nodes = [
+            {'id': 1, 'value': 'A', 'children': [2, 3]},
+            {'id': 2, 'value': 'B', 'children': []},
+            {'id': 3, 'value': 'C', 'children': [4, 5]},
+            {'id': 5, 'value': 'D', 'children': [7]},
+            {'id': 4, 'value': 'E', 'children': [6]},
+            {'id': 6, 'value': 'G', 'children': []},
+            {'id': 7, 'value': 'F', 'children': []},
+            # Second half
+            {'id': 8, 'value': 'H', 'children': [9]},
+            {'id': 9, 'value': 'C', 'children': [5, 11]},
+            {'id': 11, 'value': 'E', 'children': [13]},
+            {'id': 13, 'value': 'G', 'children': []}
+        ]
+        g = graphius.Graphius(nodes)
+        assert(g.isSameTree(9, 3))
+
     # def test_command_line_interface(self):
     #     """Test the CLI."""
     #     runner = CliRunner()
