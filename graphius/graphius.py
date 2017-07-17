@@ -143,3 +143,34 @@ class Graphius(object):
                         return False
                 # All neighbor pairs verified
                 return True
+
+    def reversedEdges(self, rootId):
+        """
+            Given a root to a graph,
+            Reverse the directed edges of a graph
+        """
+        newNodes = {}
+        self.reversedEdgesHelper(rootId, newNodes)
+        return newNodes
+
+    def reversedEdgesHelper(self, rootId, newNodes):
+        """
+            Given a root to a graph,
+            Reverse the directed edges of a graph
+        """
+
+        newNodes[rootId] = {
+                'value': self.nodes[rootId]['value'],
+                'neighbors': set()
+            }
+
+        # Base case, leaf node
+        if not self.nodes[rootId]['neighbors']:
+            return
+
+        # Recursively recurse and add all other edges
+        for neighbor in self.nodes[rootId]['neighbors']:
+            self.reversedEdgesHelper(neighbor, newNodes)
+            newNodes[neighbor]['neighbors'].add(rootId)
+            
+

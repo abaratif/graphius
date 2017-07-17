@@ -258,7 +258,7 @@ class TestGraphius(unittest.TestCase):
                 if g.isSameTree(i + 1, j + 1):
                     collapsable.add((i + 1, j + 1))
         assert(collapsable == set([(5, 10), (7, 12)]))
-        
+
     def test_14_isSameTree(self):
         """ Test every pair of node IDs for example 1 and find same subtrees. """
         nodes = [
@@ -477,6 +477,29 @@ class TestGraphius(unittest.TestCase):
                     ['H', 'C', 'D', 'F'],
                     ['H', 'C', 'E', 'G']]
         assert(g.leafPaths(8) == result)
+
+    def test_15_reverseEdges(self):
+        """ Check reversal of directed graph """
+        nodes = [
+            {'id': 1, 'value': 'A', 'children': [2, 3, 4]},
+            {'id': 2, 'value': 'B', 'children': []},
+            {'id': 3, 'value': 'C', 'children': [5]},
+            {'id': 4, 'value': 'D', 'children': []},
+            {'id': 5, 'value': 'E', 'children': [6]},
+            {'id': 6, 'value': 'F', 'children': []}
+        ]
+        g = graphius.Graphius(nodes)
+
+        nodes = [
+            {'id': 1, 'value': 'A', 'children': []},
+            {'id': 2, 'value': 'B', 'children': [1]},
+            {'id': 3, 'value': 'C', 'children': [1]},
+            {'id': 4, 'value': 'D', 'children': [1]},
+            {'id': 5, 'value': 'E', 'children': [2, 3, 4]},
+            {'id': 6, 'value': 'F', 'children': [5]}
+        ]
+        print()
+        pprint.pprint(g.reversedEdges(rootId= 1))
 
     # def test_command_line_interface(self):
     #     """Test the CLI."""
