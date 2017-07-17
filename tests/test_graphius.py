@@ -147,6 +147,150 @@ class TestGraphius(unittest.TestCase):
         g = graphius.Graphius(nodes)
         assert(g.isSameTree(1, 7) is False)
 
+    def test_8_isSameTree(self):
+        """ Test isSameTree on the D->F subtrees in example one """
+        nodes = [
+            {'id': 1, 'value': 'A', 'children': [2, 3]},
+            {'id': 2, 'value': 'B', 'children': []},
+            {'id': 3, 'value': 'C', 'children': [4, 5]},
+            {'id': 4, 'value': 'E', 'children': [6]},
+            {'id': 5, 'value': 'D', 'children': [7]},
+            {'id': 6, 'value': 'G', 'children': []},
+            {'id': 7, 'value': 'F', 'children': []},
+            # Second half
+            {'id': 8, 'value': 'B', 'children': [9]},
+            {'id': 9, 'value': 'C', 'children': [10, 11]},
+            {'id': 10, 'value': 'D', 'children': [12]},
+            {'id': 11, 'value': 'E', 'children': [13]},
+            {'id': 12, 'value': 'F', 'children': []},
+            {'id': 13, 'value': 'G', 'children': []}
+        ]
+        g = graphius.Graphius(nodes)
+        assert(g.isSameTree(5, 10) is True)
+
+    def test_9_isSameTree(self):
+        """ Test isSameTree on the C rooted subtrees in example one """
+        nodes = [
+            {'id': 1, 'value': 'A', 'children': [2, 3]},
+            {'id': 2, 'value': 'B', 'children': []},
+            {'id': 3, 'value': 'C', 'children': [4, 5]},
+            {'id': 4, 'value': 'E', 'children': [6]},
+            {'id': 5, 'value': 'D', 'children': [7]},
+            {'id': 6, 'value': 'G', 'children': []},
+            {'id': 7, 'value': 'F', 'children': []},
+            # Second half
+            {'id': 8, 'value': 'B', 'children': [9]},
+            {'id': 9, 'value': 'C', 'children': [10, 11]},
+            {'id': 10, 'value': 'D', 'children': [12]},
+            {'id': 11, 'value': 'E', 'children': [13]},
+            {'id': 12, 'value': 'F', 'children': []},
+            {'id': 13, 'value': 'G', 'children': []}
+        ]
+        g = graphius.Graphius(nodes)
+        assert(g.isSameTree(3, 9) is True)
+
+    def test_10_isSameTree(self):
+        """ Test isSameTree on the C rooted subtrees in example two """
+        nodes = [
+            {'id': 1, 'value': 'A', 'children': [2, 3]},
+            {'id': 2, 'value': 'B', 'children': []},
+            {'id': 3, 'value': 'C', 'children': [4, 5]},
+            {'id': 4, 'value': 'E', 'children': [6]},
+            {'id': 5, 'value': 'D', 'children': [7]},
+            {'id': 6, 'value': 'G', 'children': []},
+            {'id': 7, 'value': 'F', 'children': []},
+            # Second half
+            {'id': 8, 'value': 'B', 'children': [9]},
+            {'id': 9, 'value': 'C', 'children': [10, 11]},
+            {'id': 10, 'value': 'D', 'children': [12]},
+            {'id': 11, 'value': 'E', 'children': [13]},
+            {'id': 12, 'value': 'F', 'children': []},
+            {'id': 13, 'value': 'X', 'children': []}
+        ]
+        g = graphius.Graphius(nodes)
+        assert(g.isSameTree(3, 9) is False)
+
+    def test_11_isSameTree(self):
+        """ Test isSameTree on the D rooted subtrees in example two """
+        nodes = [
+            {'id': 1, 'value': 'A', 'children': [2, 3]},
+            {'id': 2, 'value': 'B', 'children': []},
+            {'id': 3, 'value': 'C', 'children': [4, 5]},
+            {'id': 4, 'value': 'E', 'children': [6]},
+            {'id': 5, 'value': 'D', 'children': [7]},
+            {'id': 6, 'value': 'G', 'children': []},
+            {'id': 7, 'value': 'F', 'children': []},
+            # Second half
+            {'id': 8, 'value': 'B', 'children': [9]},
+            {'id': 9, 'value': 'C', 'children': [10, 11]},
+            {'id': 10, 'value': 'D', 'children': [12]},
+            {'id': 11, 'value': 'E', 'children': [13]},
+            {'id': 12, 'value': 'F', 'children': []},
+            {'id': 13, 'value': 'X', 'children': []}
+        ]
+        g = graphius.Graphius(nodes)
+        assert(g.isSameTree(5, 10) is True)
+
+    def test_12_isSameTree(self):
+        """ Test every pair of node IDs for example 2 and find same subtrees. """
+        nodes = [
+            {'id': 1, 'value': 'A', 'children': [2, 3]},
+            {'id': 2, 'value': 'B', 'children': []},
+            {'id': 3, 'value': 'C', 'children': [4, 5]},
+            {'id': 4, 'value': 'E', 'children': [6]},
+            {'id': 5, 'value': 'D', 'children': [7]},
+            {'id': 6, 'value': 'G', 'children': []},
+            {'id': 7, 'value': 'F', 'children': []},
+            # Second half
+            {'id': 8, 'value': 'B', 'children': [9]},
+            {'id': 9, 'value': 'C', 'children': [10, 11]},
+            {'id': 10, 'value': 'D', 'children': [12]},
+            {'id': 11, 'value': 'E', 'children': [13]},
+            {'id': 12, 'value': 'F', 'children': []},
+            {'id': 13, 'value': 'X', 'children': []}
+        ]
+        g = graphius.Graphius(nodes)
+
+        collapsable = set()
+
+        for i in range(0, len(g.nodes.keys())):
+            for j in range(i + 1, len(g.nodes.keys())):
+                if g.isSameTree(i + 1, j + 1):
+                    collapsable.add((i + 1, j + 1))
+        assert(collapsable == set([(5, 10), (7, 12)]))
+        
+    def test_14_isSameTree(self):
+        """ Test every pair of node IDs for example 1 and find same subtrees. """
+        nodes = [
+            {'id': 1, 'value': 'A', 'children': [2, 3]},
+            {'id': 2, 'value': 'B', 'children': []},
+            {'id': 3, 'value': 'C', 'children': [4, 5]},
+            {'id': 4, 'value': 'E', 'children': [6]},
+            {'id': 5, 'value': 'D', 'children': [7]},
+            {'id': 6, 'value': 'G', 'children': []},
+            {'id': 7, 'value': 'F', 'children': []},
+            # Second half
+            {'id': 8, 'value': 'B', 'children': [9]},
+            {'id': 9, 'value': 'C', 'children': [10, 11]},
+            {'id': 10, 'value': 'D', 'children': [12]},
+            {'id': 11, 'value': 'E', 'children': [13]},
+            {'id': 12, 'value': 'F', 'children': []},
+            {'id': 13, 'value': 'G', 'children': []}
+        ]
+        g = graphius.Graphius(nodes)
+
+        collapsable = set()
+
+
+        for i in range(1, len(g.nodes.keys())):
+            for j in range(i + 1, len(g.nodes.keys())):
+                if g.isSameTree(i + 1, j + 1):
+                    collapsable.add((i + 1, j + 1))
+        print(collapsable)
+        assert(collapsable == set([(3, 9), (4, 11), (5, 10), (6, 13), (7, 12)]))
+
+
+
     # def test_8_deleteTree(self):
     #     """ Test deletion of a subtree of a single node """
     #     nodes = [
@@ -333,9 +477,6 @@ class TestGraphius(unittest.TestCase):
                     ['H', 'C', 'D', 'F'],
                     ['H', 'C', 'E', 'G']]
         assert(g.leafPaths(8) == result)
-
-
-
 
     # def test_command_line_interface(self):
     #     """Test the CLI."""
