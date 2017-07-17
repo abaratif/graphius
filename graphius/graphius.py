@@ -32,52 +32,52 @@ class Graphius(object):
                 self.mapping[node['value']] = set()
             self.mapping[node['value']].add(node['id'])
 
-    def mergeRedundant(self):
-        """
-            For node values that have multiple IDs according to mapping dict,
-            check if they represent the same subtree
-        """
-        for nodeValue, nodeIds in self.mapping.items():
-            if len(nodeIds) > 0:
-                nodeIds = list(nodeIds)
-                for i in range(len(nodeIds)):
-                    for j in range(i + 1, len(nodeIds)):
+    # def mergeRedundant(self):
+    #     """
+    #         For node values that have multiple IDs according to mapping dict,
+    #         check if they represent the same subtree
+    #     """
+    #     for nodeValue, nodeIds in self.mapping.items():
+    #         if len(nodeIds) > 0:
+    #             nodeIds = list(nodeIds)
+    #             for i in range(len(nodeIds)):
+    #                 for j in range(i + 1, len(nodeIds)):
+    #
+    #                     if self.isSameTree(nodeIds[i], nodeIds[j]):
+    #                         self.mergeSubtrees(nodeIds[i], nodeIds[j])
+    #                         # No longer want to consider nodes at i and j
 
-                        if self.isSameTree(nodeIds[i], nodeIds[j]):
-                            self.mergeSubtrees(nodeIds[i], nodeIds[j])
-                            # No longer want to consider nodes at i and j
+    # def mergeSubtrees(self, root1Id, root2Id):
+    #     """
+    #         Given roots of two identical subtrees,
+    #         delete subtree at root2 and replace it with subtree at root1
+    #     """
+    #     # print("Call to mergeSubtrees for ids {} and {}".format(root1Id, root2Id))
+    #     self.deleteTree(root2Id)
+    #     # Search for any refs to root2Id, update to root1Id
+    #     for nodeId, data in self.nodes.items():
+    #         if root2Id in data['neighbors']:
+    #             data['neighbors'].remove(root2Id)
+    #             data['neighbors'].add(root1Id)
 
-    def mergeSubtrees(self, root1Id, root2Id):
-        """
-            Given roots of two identical subtrees,
-            delete subtree at root2 and replace it with subtree at root1
-        """
-        # print("Call to mergeSubtrees for ids {} and {}".format(root1Id, root2Id))
-        self.deleteTree(root2Id)
-        # Search for any refs to root2Id, update to root1Id
-        for nodeId, data in self.nodes.items():
-            if root2Id in data['neighbors']:
-                data['neighbors'].remove(root2Id)
-                data['neighbors'].add(root1Id)
-
-    def deleteTree(self, rootId):
-        """
-            Given the root of a subtree as a node Id, delete that subtree
-        """
-        if rootId not in self.nodes:
-            return
-        # root exists in graph
-        for neighborId in list(self.nodes[rootId]['neighbors']):
-            # Recursively call delete operation
-            self.deleteTree(neighborId)
-        # Delete the current node after having deleted all children recursively
-        rootValue = self.nodes[rootId]['value']
-        # Remove from mappings dict
-        # TODO: Decide if this should be removed or not
-        # if rootValue in self.mapping:
-        #     if rootId in self.mapping[rootValue]:
-        #         self.mapping[rootValue].remove(rootId)
-        del self.nodes[rootId]
+    # def deleteTree(self, rootId):
+    #     """
+    #         Given the root of a subtree as a node Id, delete that subtree
+    #     """
+    #     if rootId not in self.nodes:
+    #         return
+    #     # root exists in graph
+    #     for neighborId in list(self.nodes[rootId]['neighbors']):
+    #         # Recursively call delete operation
+    #         self.deleteTree(neighborId)
+    #     # Delete the current node after having deleted all children recursively
+    #     rootValue = self.nodes[rootId]['value']
+    #     # Remove from mappings dict
+    #     # TODO: Decide if this should be removed or not
+    #     # if rootValue in self.mapping:
+    #     #     if rootId in self.mapping[rootValue]:
+    #     #         self.mapping[rootValue].remove(rootId)
+    #     del self.nodes[rootId]
 
     def leafPaths(self, rootId):
         """
@@ -172,5 +172,3 @@ class Graphius(object):
         for neighbor in self.nodes[rootId]['neighbors']:
             self.reversedEdgesHelper(neighbor, newNodes)
             newNodes[neighbor]['neighbors'].add(rootId)
-            
-

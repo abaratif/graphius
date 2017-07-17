@@ -340,7 +340,7 @@ class TestGraphius(unittest.TestCase):
         assert(g.leafPaths(8) == result)
 
     def test_16_reverseEdges(self):
-        """ Check reversal of directed graph """
+        """ Check reversal of directed graph given root """
         nodes = [
             {'id': 1, 'value': 'A', 'children': [2, 3, 4]},
             {'id': 2, 'value': 'B', 'children': []},
