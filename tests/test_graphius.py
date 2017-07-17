@@ -501,6 +501,35 @@ class TestGraphius(unittest.TestCase):
         print()
         pprint.pprint(g.reversedEdges(rootId= 1))
 
+    def test_16_leafPaths(self):
+        """Find leaf path From Node 1 {1:A} in example two """
+        nodes = [
+            {'id': 1, 'value': 'A', 'children': [2, 3]},
+            {'id': 2, 'value': 'B', 'children': []},
+            {'id': 3, 'value': 'C', 'children': [4, 5]},
+            {'id': 4, 'value': 'E', 'children': [6]},
+            {'id': 5, 'value': 'D', 'children': [7]},
+            {'id': 6, 'value': 'G', 'children': []},
+            {'id': 7, 'value': 'F', 'children': []},
+            # Second half
+            {'id': 8, 'value': 'H', 'children': [9]},
+            {'id': 9, 'value': 'C', 'children': [10, 11]},
+            {'id': 10, 'value': 'D', 'children': [12]},
+            {'id': 11, 'value': 'E', 'children': [13]},
+            {'id': 12, 'value': 'F', 'children': []},
+            {'id': 13, 'value': 'X', 'children': []}
+        ]
+        g = graphius.Graphius(nodes)
+        # result = [
+        #             ['A', 'B'],
+        #             ['A', 'C', 'E', 'G'],
+        #             ['A', 'C', 'D', 'F']]
+        # assert(g.leafPaths(1) == result)
+        result = [
+                    ['H', 'C', 'D', 'F'],
+                    ['H', 'C', 'E', 'X']]
+        assert(g.leafPaths(8) == result)
+
     # def test_command_line_interface(self):
     #     """Test the CLI."""
     #     runner = CliRunner()
