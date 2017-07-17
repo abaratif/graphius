@@ -14,7 +14,7 @@ class Graphius(object):
     def __init__(self, data):
         self.data = data
         self.nodes = {}
-        self.mapping = {}
+        # self.mapping = {}
         self.parse()
 
     def parse(self):
@@ -27,10 +27,11 @@ class Graphius(object):
                 'value': node['value'],
                 'neighbors': set(node['children'])
             }
+            # TODO: Mapping dict depreciated, need to remove
             # If no previous entry in mapping dict, create empty set
-            if node['value'] not in self.mapping:
-                self.mapping[node['value']] = set()
-            self.mapping[node['value']].add(node['id'])
+            # if node['value'] not in self.mapping:
+            #     self.mapping[node['value']] = set()
+            # self.mapping[node['value']].add(node['id'])
 
     # def mergeRedundant(self):
     #     """
@@ -174,3 +175,15 @@ class Graphius(object):
         for neighbor in self.nodes[rootId]['neighbors']:
             self.reversedEdgesHelper(neighbor, newNodes)
             newNodes[neighbor]['neighbors'].add(rootId)
+
+    def findSameSubtrees(self):
+        """ Brute force O(n^2) method to find all similar subtrees
+        """
+
+        collapsable = []
+
+        for i in range(0, len(self.nodes.keys())):
+            for j in range(i + 1, len(self.nodes.keys())):
+                if self.isSameTree(i + 1, j + 1):
+                    collapsable.append([i + 1, j + 1])
+        return collapsable

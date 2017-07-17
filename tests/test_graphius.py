@@ -31,8 +31,6 @@ class TestGraphius(unittest.TestCase):
         g = graphius.Graphius(nodes)
         # Test nodes
         assert(g.nodes[1]['value'] == 'A')
-        # Test mappings
-        assert(list(g.mapping['B']) == [2, 4])
 
     def test_2_isSameTree(self):
         """Test isSameTree for two nodes with same value,
@@ -231,9 +229,8 @@ class TestGraphius(unittest.TestCase):
         g = graphius.Graphius(nodes)
         assert(g.isSameTree(5, 10) is True)
 
-    def test_12_isSameTree(self):
-        """ Test every pair of node IDs for example 2,
-        and find same subtrees. """
+    def test_12_findSameSubtrees(self):
+        """ Test findSameSubtrees for example 2 """
         nodes = [
             {'id': 1, 'value': 'A', 'children': [2, 3]},
             {'id': 2, 'value': 'B', 'children': []},
@@ -252,17 +249,10 @@ class TestGraphius(unittest.TestCase):
         ]
         g = graphius.Graphius(nodes)
 
-        collapsable = set()
+        assert(g.findSameSubtrees() == [[5, 10], [7, 12]])
 
-        for i in range(0, len(g.nodes.keys())):
-            for j in range(i + 1, len(g.nodes.keys())):
-                if g.isSameTree(i + 1, j + 1):
-                    collapsable.add((i + 1, j + 1))
-        assert(collapsable == set([(5, 10), (7, 12)]))
-
-    def test_13_isSameTree(self):
-        """ Test every pair of node IDs for example 1
-        and find same subtrees. """
+    def test_13_findSameSubtrees(self):
+        """ Test findSameSubtrees for example 1 """
         nodes = [
             {'id': 1, 'value': 'A', 'children': [2, 3]},
             {'id': 2, 'value': 'B', 'children': []},
@@ -280,15 +270,9 @@ class TestGraphius(unittest.TestCase):
             {'id': 13, 'value': 'G', 'children': []}
         ]
         g = graphius.Graphius(nodes)
-
-        collapsable = set()
-
-        for i in range(1, len(g.nodes.keys())):
-            for j in range(i + 1, len(g.nodes.keys())):
-                if g.isSameTree(i + 1, j + 1):
-                    collapsable.add((i + 1, j + 1))
-        assert(collapsable == set(
-                                [(3, 9), (4, 11), (5, 10), (6, 13), (7, 12)]))
+        assert(g.findSameSubtrees() == [
+                                        [3, 9], [4, 11], [5, 10],
+                                        [6, 13], [7, 12]])
 
     def test_14_leafPaths(self):
         """ Find leaf paths from Node 1 {1: A} in example 1 """
