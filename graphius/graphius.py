@@ -25,7 +25,8 @@ class Graphius(object):
             # Add the node data to nodes dict
             self.nodes[node['id']] = {
                 'value': node['value'],
-                'neighbors': set(node['children'])
+                'neighbors': set(node['children']),
+                'safe': True
             }
 
     def leafPaths(self, rootId):
@@ -141,13 +142,20 @@ class Graphius(object):
             return
 
     def findSameSubtrees(self):
-        """ Brute force O(n^2) method to find all similar subtrees
+        """ Brute force method to find all similar subtrees
         """
 
-        collapsable = []
+        collapsable = {}
 
         for i in range(0, len(self.nodes.keys())):
             for j in range(i + 1, len(self.nodes.keys())):
                 if self.isSameTree(i + 1, j + 1):
-                    collapsable.append([i + 1, j + 1])
+                    collapsable[i + 1] = [j + 1]
+        print(collapsable)
         return collapsable
+
+    def merge(self):
+        mergePairs = self.findSameSubtrees()
+        print(mergePairs)
+
+    # def tryMerge(self, rootId, mergePairs):

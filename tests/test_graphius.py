@@ -249,7 +249,7 @@ class TestGraphius(unittest.TestCase):
         ]
         g = graphius.Graphius(nodes)
 
-        assert(g.findSameSubtrees() == [[5, 10], [7, 12]])
+        assert(g.findSameSubtrees() == {5: [10], 7: [12]})
 
     def test_13_findSameSubtrees(self):
         """ Test findSameSubtrees for example 1 """
@@ -270,9 +270,12 @@ class TestGraphius(unittest.TestCase):
             {'id': 13, 'value': 'G', 'children': []}
         ]
         g = graphius.Graphius(nodes)
-        assert(g.findSameSubtrees() == [
-                                        [3, 9], [4, 11], [5, 10],
-                                        [6, 13], [7, 12]])
+        assert(g.findSameSubtrees() == {
+            3: [9],
+            4: [11],
+            5: [10],
+            6: [13],
+            7: [12]})
 
     def test_14_leafPaths(self):
         """ Find leaf paths from Node 1 {1: A} in example 1 """
@@ -392,6 +395,31 @@ class TestGraphius(unittest.TestCase):
                  5: {'neighbors': set([3]), 'value': 'E'},
                  6: {'neighbors': set([5]), 'value': 'F'}}
         assert(g.reversedEdges() == result)
+
+    def test_19_merge(self):
+        """ Test merge for example 1 """
+        nodes = [
+            {'id': 1, 'value': 'A', 'children': [2, 3]},
+            {'id': 2, 'value': 'B', 'children': []},
+            {'id': 3, 'value': 'C', 'children': [4, 5]},
+            {'id': 4, 'value': 'E', 'children': [6]},
+            {'id': 5, 'value': 'D', 'children': [7]},
+            {'id': 6, 'value': 'G', 'children': []},
+            {'id': 7, 'value': 'F', 'children': []},
+            # Second half
+            {'id': 8, 'value': 'B', 'children': [9]},
+            {'id': 9, 'value': 'C', 'children': [10, 11]},
+            {'id': 10, 'value': 'D', 'children': [12]},
+            {'id': 11, 'value': 'E', 'children': [13]},
+            {'id': 12, 'value': 'F', 'children': []},
+            {'id': 13, 'value': 'G', 'children': []}
+        ]
+        g = graphius.Graphius(nodes)
+        g.merge()
+        assert(False)
+        # assert(g.findSameSubtrees() == [
+        #                                 [3, 9], [4, 11], [5, 10],
+        #                                 [6, 13], [7, 12]])
 
     # def test_command_line_interface(self):
     #     """Test the CLI."""
