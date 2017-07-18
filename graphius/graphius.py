@@ -29,6 +29,25 @@ class Graphius(object):
                 'safe': True
             }
 
+    def addDummyNode(self):
+        """ Add a dummy node with id -1 and an outgoing edge to all other
+        nodes """
+
+        self.nodes[-1] = {
+            'value': 'dummy',
+            'neighbors': set()
+        }
+        for nodeId in self.nodes.keys():
+            if nodeId != -1:
+                self.nodes[-1]['neighbors'].add(nodeId)
+
+    def removeDummyNode(self):
+        """ Remove dummy nodes added using addDummyNode """
+        for nodeId in self.nodes.keys():
+            if -1 in self.nodes[nodeId]['neighbors']:
+                self.nodes[nodeId]['neighbors'].remove(-1)
+        del self.nodes[-1]
+
     def leafPaths(self, rootId):
         """
             Given a root node Id, return an array of paths to leaf nodes
@@ -96,26 +115,19 @@ class Graphius(object):
                 # All neighbor pairs verified
                 return True
 
-    def reversedEdges(self):
+    def reverseEdges(self):
         """ Return a graph with reversed edges, not given a root.
         Use a dummy root node instead, in case of multiple
         connected components
         """
-        self.nodes[-1] = {
-            'value': 'dummy',
-            'neighbors': set()
-        }
-        for nodeId in self.nodes.keys():
-            if nodeId != -1:
-                self.nodes[-1]['neighbors'].add(nodeId)
+        self.addDummyNode()
 
         newNodes = {}
         self.reversedEdgesHelper(-1, newNodes)
-        for nodeId in newNodes.keys():
-            if -1 in newNodes[nodeId]['neighbors']:
-                newNodes[nodeId]['neighbors'].remove(-1)
-        del newNodes[-1]
-        return newNodes
+
+        self.nodes = newNodes
+
+        self.removeDummyNode()
 
     def reversedEdgesHelper(self, rootId, newNodes, covered=set()):
         """
@@ -151,11 +163,10 @@ class Graphius(object):
             for j in range(i + 1, len(self.nodes.keys())):
                 if self.isSameTree(i + 1, j + 1):
                     collapsable[i + 1] = [j + 1]
-        print(collapsable)
         return collapsable
 
     def merge(self):
         mergePairs = self.findSameSubtrees()
-        print(mergePairs)
+
 
     # def tryMerge(self, rootId, mergePairs):

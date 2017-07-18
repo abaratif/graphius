@@ -394,7 +394,8 @@ class TestGraphius(unittest.TestCase):
                  4: {'neighbors': set([1]), 'value': 'D'},
                  5: {'neighbors': set([3]), 'value': 'E'},
                  6: {'neighbors': set([5]), 'value': 'F'}}
-        assert(g.reversedEdges() == result)
+        g.reverseEdges()
+        assert(g.nodes == result)
 
     def test_19_merge(self):
         """ Test merge for example 1 """
