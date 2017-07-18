@@ -7,11 +7,44 @@
 import unittest
 
 from graphius import graphius
-import pprint
+from pprint import pprint
 
 
 class TestGraphius(unittest.TestCase):
     """Tests for `graphius` package."""
+    EXAMPLE1 = [
+        {'id': 1, 'value': 'A', 'children': [2, 3]},
+        {'id': 2, 'value': 'B', 'children': []},
+        {'id': 3, 'value': 'C', 'children': [4, 5]},
+        {'id': 4, 'value': 'E', 'children': [6]},
+        {'id': 5, 'value': 'D', 'children': [7]},
+        {'id': 6, 'value': 'G', 'children': []},
+        {'id': 7, 'value': 'F', 'children': []},
+        # Second half
+        {'id': 8, 'value': 'B', 'children': [9]},
+        {'id': 9, 'value': 'C', 'children': [10, 11]},
+        {'id': 10, 'value': 'D', 'children': [12]},
+        {'id': 11, 'value': 'E', 'children': [13]},
+        {'id': 12, 'value': 'F', 'children': []},
+        {'id': 13, 'value': 'G', 'children': []}
+    ]
+
+    EXAMPLE2 = [
+        {'id': 1, 'value': 'A', 'children': [2, 3]},
+        {'id': 2, 'value': 'B', 'children': []},
+        {'id': 3, 'value': 'C', 'children': [4, 5]},
+        {'id': 4, 'value': 'E', 'children': [6]},
+        {'id': 5, 'value': 'D', 'children': [7]},
+        {'id': 6, 'value': 'G', 'children': []},
+        {'id': 7, 'value': 'F', 'children': []},
+        # Second half
+        {'id': 8, 'value': 'H', 'children': [9]},
+        {'id': 9, 'value': 'C', 'children': [10, 11]},
+        {'id': 10, 'value': 'D', 'children': [12]},
+        {'id': 11, 'value': 'E', 'children': [13]},
+        {'id': 12, 'value': 'F', 'children': []},
+        {'id': 13, 'value': 'X', 'children': []}
+    ]
 
     def setUp(self):
         """Set up test fixtures, if any."""
@@ -147,128 +180,43 @@ class TestGraphius(unittest.TestCase):
 
     def test_8_isSameTree(self):
         """ Test isSameTree on the D->F subtrees in example one """
-        nodes = [
-            {'id': 1, 'value': 'A', 'children': [2, 3]},
-            {'id': 2, 'value': 'B', 'children': []},
-            {'id': 3, 'value': 'C', 'children': [4, 5]},
-            {'id': 4, 'value': 'E', 'children': [6]},
-            {'id': 5, 'value': 'D', 'children': [7]},
-            {'id': 6, 'value': 'G', 'children': []},
-            {'id': 7, 'value': 'F', 'children': []},
-            # Second half
-            {'id': 8, 'value': 'B', 'children': [9]},
-            {'id': 9, 'value': 'C', 'children': [10, 11]},
-            {'id': 10, 'value': 'D', 'children': [12]},
-            {'id': 11, 'value': 'E', 'children': [13]},
-            {'id': 12, 'value': 'F', 'children': []},
-            {'id': 13, 'value': 'G', 'children': []}
-        ]
+        nodes = self.EXAMPLE1
+
         g = graphius.Graphius(nodes)
         assert(g.isSameTree(5, 10) is True)
 
     def test_9_isSameTree(self):
         """ Test isSameTree on the C rooted subtrees in example one """
-        nodes = [
-            {'id': 1, 'value': 'A', 'children': [2, 3]},
-            {'id': 2, 'value': 'B', 'children': []},
-            {'id': 3, 'value': 'C', 'children': [4, 5]},
-            {'id': 4, 'value': 'E', 'children': [6]},
-            {'id': 5, 'value': 'D', 'children': [7]},
-            {'id': 6, 'value': 'G', 'children': []},
-            {'id': 7, 'value': 'F', 'children': []},
-            # Second half
-            {'id': 8, 'value': 'B', 'children': [9]},
-            {'id': 9, 'value': 'C', 'children': [10, 11]},
-            {'id': 10, 'value': 'D', 'children': [12]},
-            {'id': 11, 'value': 'E', 'children': [13]},
-            {'id': 12, 'value': 'F', 'children': []},
-            {'id': 13, 'value': 'G', 'children': []}
-        ]
+        nodes = self.EXAMPLE1
+
         g = graphius.Graphius(nodes)
         assert(g.isSameTree(3, 9) is True)
 
     def test_10_isSameTree(self):
         """ Test isSameTree on the C rooted subtrees in example two """
-        nodes = [
-            {'id': 1, 'value': 'A', 'children': [2, 3]},
-            {'id': 2, 'value': 'B', 'children': []},
-            {'id': 3, 'value': 'C', 'children': [4, 5]},
-            {'id': 4, 'value': 'E', 'children': [6]},
-            {'id': 5, 'value': 'D', 'children': [7]},
-            {'id': 6, 'value': 'G', 'children': []},
-            {'id': 7, 'value': 'F', 'children': []},
-            # Second half
-            {'id': 8, 'value': 'B', 'children': [9]},
-            {'id': 9, 'value': 'C', 'children': [10, 11]},
-            {'id': 10, 'value': 'D', 'children': [12]},
-            {'id': 11, 'value': 'E', 'children': [13]},
-            {'id': 12, 'value': 'F', 'children': []},
-            {'id': 13, 'value': 'X', 'children': []}
-        ]
+        nodes = self.EXAMPLE2
+
         g = graphius.Graphius(nodes)
         assert(g.isSameTree(3, 9) is False)
 
     def test_11_isSameTree(self):
         """ Test isSameTree on the D rooted subtrees in example two """
-        nodes = [
-            {'id': 1, 'value': 'A', 'children': [2, 3]},
-            {'id': 2, 'value': 'B', 'children': []},
-            {'id': 3, 'value': 'C', 'children': [4, 5]},
-            {'id': 4, 'value': 'E', 'children': [6]},
-            {'id': 5, 'value': 'D', 'children': [7]},
-            {'id': 6, 'value': 'G', 'children': []},
-            {'id': 7, 'value': 'F', 'children': []},
-            # Second half
-            {'id': 8, 'value': 'B', 'children': [9]},
-            {'id': 9, 'value': 'C', 'children': [10, 11]},
-            {'id': 10, 'value': 'D', 'children': [12]},
-            {'id': 11, 'value': 'E', 'children': [13]},
-            {'id': 12, 'value': 'F', 'children': []},
-            {'id': 13, 'value': 'X', 'children': []}
-        ]
+        nodes = self.EXAMPLE2
+
         g = graphius.Graphius(nodes)
         assert(g.isSameTree(5, 10) is True)
 
     def test_12_findSameSubtrees(self):
         """ Test findSameSubtrees for example 2 """
-        nodes = [
-            {'id': 1, 'value': 'A', 'children': [2, 3]},
-            {'id': 2, 'value': 'B', 'children': []},
-            {'id': 3, 'value': 'C', 'children': [4, 5]},
-            {'id': 4, 'value': 'E', 'children': [6]},
-            {'id': 5, 'value': 'D', 'children': [7]},
-            {'id': 6, 'value': 'G', 'children': []},
-            {'id': 7, 'value': 'F', 'children': []},
-            # Second half
-            {'id': 8, 'value': 'B', 'children': [9]},
-            {'id': 9, 'value': 'C', 'children': [10, 11]},
-            {'id': 10, 'value': 'D', 'children': [12]},
-            {'id': 11, 'value': 'E', 'children': [13]},
-            {'id': 12, 'value': 'F', 'children': []},
-            {'id': 13, 'value': 'X', 'children': []}
-        ]
-        g = graphius.Graphius(nodes)
+        nodes = self.EXAMPLE2
 
+        g = graphius.Graphius(nodes)
         assert(g.findSameSubtrees() == {5: [10], 7: [12]})
 
     def test_13_findSameSubtrees(self):
         """ Test findSameSubtrees for example 1 """
-        nodes = [
-            {'id': 1, 'value': 'A', 'children': [2, 3]},
-            {'id': 2, 'value': 'B', 'children': []},
-            {'id': 3, 'value': 'C', 'children': [4, 5]},
-            {'id': 4, 'value': 'E', 'children': [6]},
-            {'id': 5, 'value': 'D', 'children': [7]},
-            {'id': 6, 'value': 'G', 'children': []},
-            {'id': 7, 'value': 'F', 'children': []},
-            # Second half
-            {'id': 8, 'value': 'B', 'children': [9]},
-            {'id': 9, 'value': 'C', 'children': [10, 11]},
-            {'id': 10, 'value': 'D', 'children': [12]},
-            {'id': 11, 'value': 'E', 'children': [13]},
-            {'id': 12, 'value': 'F', 'children': []},
-            {'id': 13, 'value': 'G', 'children': []}
-        ]
+        nodes = self.EXAMPLE1
+
         g = graphius.Graphius(nodes)
         assert(g.findSameSubtrees() == {
             3: [9],
@@ -279,80 +227,34 @@ class TestGraphius(unittest.TestCase):
 
     def test_14_leafPaths(self):
         """ Find leaf paths from Node 1 {1: A} in example 1 """
-        nodes = [
-            {'id': 1, 'value': 'A', 'children': [2, 3]},
-            {'id': 2, 'value': 'B', 'children': []},
-            {'id': 3, 'value': 'C', 'children': [4, 5]},
-            {'id': 4, 'value': 'D', 'children': [6]},
-            {'id': 5, 'value': 'E', 'children': [7]},
-            {'id': 7, 'value': 'G', 'children': []},
-            {'id': 6, 'value': 'F', 'children': []},
-            # Second half
-            {'id': 8, 'value': 'H', 'children': [9]},
-            {'id': 9, 'value': 'C', 'children': [10, 11]},
-            {'id': 10, 'value': 'D', 'children': [12]},
-            {'id': 11, 'value': 'E', 'children': [13]},
-            {'id': 12, 'value': 'F', 'children': []},
-            {'id': 13, 'value': 'G', 'children': []}
-        ]
+        nodes = self.EXAMPLE1
+
         g = graphius.Graphius(nodes)
         result = [
                     ['A', 'B'],
-                    ['A', 'C', 'D', 'F'],
-                    ['A', 'C', 'E', 'G']]
+                    ['A', 'C', 'E', 'G'],
+                    ['A', 'C', 'D', 'F']]
         assert(g.leafPaths(1) == result)
 
     def test_15_leafPaths(self):
         """ Find leaf paths from Node 8 {8: H} in example 1 """
-        nodes = [
-            {'id': 1, 'value': 'A', 'children': [2, 3]},
-            {'id': 2, 'value': 'B', 'children': []},
-            {'id': 3, 'value': 'C', 'children': [4, 5]},
-            {'id': 4, 'value': 'D', 'children': [6]},
-            {'id': 5, 'value': 'E', 'children': [7]},
-            {'id': 7, 'value': 'G', 'children': []},
-            {'id': 6, 'value': 'F', 'children': []},
-            # Second half
-            {'id': 8, 'value': 'H', 'children': [9]},
-            {'id': 9, 'value': 'C', 'children': [10, 11]},
-            {'id': 10, 'value': 'D', 'children': [12]},
-            {'id': 11, 'value': 'E', 'children': [13]},
-            {'id': 12, 'value': 'F', 'children': []},
-            {'id': 13, 'value': 'G', 'children': []}
-        ]
+        nodes = self.EXAMPLE1
+
         g = graphius.Graphius(nodes)
         result = [
-                    ['H', 'C', 'D', 'F'],
-                    ['H', 'C', 'E', 'G']]
+                    ['B', 'C', 'D', 'F'],
+                    ['B', 'C', 'E', 'G']]
         assert(g.leafPaths(8) == result)
 
     def test_16_leafPaths(self):
         """Find leaf path From Node 1 {1:A} in example two """
-        nodes = [
-            {'id': 1, 'value': 'A', 'children': [2, 3]},
-            {'id': 2, 'value': 'B', 'children': []},
-            {'id': 3, 'value': 'C', 'children': [4, 5]},
-            {'id': 4, 'value': 'E', 'children': [6]},
-            {'id': 5, 'value': 'D', 'children': [7]},
-            {'id': 6, 'value': 'G', 'children': []},
-            {'id': 7, 'value': 'F', 'children': []},
-            # Second half
-            {'id': 8, 'value': 'H', 'children': [9]},
-            {'id': 9, 'value': 'C', 'children': [10, 11]},
-            {'id': 10, 'value': 'D', 'children': [12]},
-            {'id': 11, 'value': 'E', 'children': [13]},
-            {'id': 12, 'value': 'F', 'children': []},
-            {'id': 13, 'value': 'X', 'children': []}
-        ]
+        nodes = self.EXAMPLE2
+
         g = graphius.Graphius(nodes)
-        # result = [
-        #             ['A', 'B'],
-        #             ['A', 'C', 'E', 'G'],
-        #             ['A', 'C', 'D', 'F']]
-        # assert(g.leafPaths(1) == result)
+
         result = [
-                    ['H', 'C', 'D', 'F'],
-                    ['H', 'C', 'E', 'X']]
+            ['H', 'C', 'D', 'F'],
+            ['H', 'C', 'E', 'X']]
         assert(g.leafPaths(8) == result)
 
     def test_17_isSameTree(self):
@@ -399,52 +301,14 @@ class TestGraphius(unittest.TestCase):
 
     def test_19_markMerged(self):
         """ Test marking example 1 subtree as merged """
-        nodes = [
-            {'id': 1, 'value': 'A', 'children': [2, 3]},
-            {'id': 2, 'value': 'B', 'children': []},
-            {'id': 3, 'value': 'C', 'children': [4, 5]},
-            {'id': 4, 'value': 'E', 'children': [6]},
-            {'id': 5, 'value': 'D', 'children': [7]},
-            {'id': 6, 'value': 'G', 'children': []},
-            {'id': 7, 'value': 'F', 'children': []},
-            # Second half
-            {'id': 8, 'value': 'B', 'children': [9]},
-            {'id': 9, 'value': 'C', 'children': [10, 11]},
-            {'id': 10, 'value': 'D', 'children': [12]},
-            {'id': 11, 'value': 'E', 'children': [13]},
-            {'id': 12, 'value': 'F', 'children': []},
-            {'id': 13, 'value': 'G', 'children': []}
-        ]
+        nodes = self.EXAMPLE1
+
         g = graphius.Graphius(nodes)
         g.markMerged(3)
-        pprint.pprint(g.nodes)
+        # pprint(g.nodes)
         assert(g.nodes[6]['safe'] is False)
 
 
-    # def test_25_mergeSubtrees(self):
-    #     """ Test mergeSubtrees for example 1 """
-    #     nodes = [
-    #         {'id': 1, 'value': 'A', 'children': [2, 3]},
-    #         {'id': 2, 'value': 'B', 'children': []},
-    #         {'id': 3, 'value': 'C', 'children': [4, 5]},
-    #         {'id': 4, 'value': 'E', 'children': [6]},
-    #         {'id': 5, 'value': 'D', 'children': [7]},
-    #         {'id': 6, 'value': 'G', 'children': []},
-    #         {'id': 7, 'value': 'F', 'children': []},
-    #         # Second half
-    #         {'id': 8, 'value': 'B', 'children': [9]},
-    #         {'id': 9, 'value': 'C', 'children': [10, 11]},
-    #         {'id': 10, 'value': 'D', 'children': [12]},
-    #         {'id': 11, 'value': 'E', 'children': [13]},
-    #         {'id': 12, 'value': 'F', 'children': []},
-    #         {'id': 13, 'value': 'G', 'children': []}
-    #     ]
-    #     g = graphius.Graphius(nodes)
-    #     g.mergeSubtrees()
-    #     assert(False)
-        # assert(g.findSameSubtrees() == [
-        #                                 [3, 9], [4, 11], [5, 10],
-        #                                 [6, 13], [7, 12]])
 
     # def test_command_line_interface(self):
     #     """Test the CLI."""
