@@ -397,8 +397,8 @@ class TestGraphius(unittest.TestCase):
         g.reverseEdges()
         assert(g.nodes == result)
 
-    def test_19_merge(self):
-        """ Test merge for example 1 """
+    def test_19_mergeSubtrees(self):
+        """ Test mergeSubtrees for example 1 """
         nodes = [
             {'id': 1, 'value': 'A', 'children': [2, 3]},
             {'id': 2, 'value': 'B', 'children': []},
@@ -416,7 +416,7 @@ class TestGraphius(unittest.TestCase):
             {'id': 13, 'value': 'G', 'children': []}
         ]
         g = graphius.Graphius(nodes)
-        g.merge()
+        g.mergeSubtrees()
         assert(False)
         # assert(g.findSameSubtrees() == [
         #                                 [3, 9], [4, 11], [5, 10],

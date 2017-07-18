@@ -165,8 +165,16 @@ class Graphius(object):
                     collapsable[i + 1] = [j + 1]
         return collapsable
 
-    def merge(self):
+    def mergeSubtrees(self):
         mergePairs = self.findSameSubtrees()
+        self.addDummyNode()
+
+        # The dummy node exists
+        assert(self.nodes[-1])
+
+
+        self.removeDummyNode()
+
 
 
     # def tryMerge(self, rootId, mergePairs):
