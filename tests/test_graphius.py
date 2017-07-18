@@ -323,36 +323,7 @@ class TestGraphius(unittest.TestCase):
                     ['H', 'C', 'E', 'G']]
         assert(g.leafPaths(8) == result)
 
-    def test_16_reverseEdges(self):
-        """ Check reversal of directed graph given root """
-        nodes = [
-            {'id': 1, 'value': 'A', 'children': [2, 3, 4]},
-            {'id': 2, 'value': 'B', 'children': []},
-            {'id': 3, 'value': 'C', 'children': [5]},
-            {'id': 4, 'value': 'D', 'children': []},
-            {'id': 5, 'value': 'E', 'children': [6]},
-            {'id': 6, 'value': 'F', 'children': []}
-        ]
-        g = graphius.Graphius(nodes)
-
-        nodes = [
-            {'id': 1, 'value': 'A', 'children': []},
-            {'id': 2, 'value': 'B', 'children': [1]},
-            {'id': 3, 'value': 'C', 'children': [1]},
-            {'id': 4, 'value': 'D', 'children': [1]},
-            {'id': 5, 'value': 'E', 'children': [2, 3, 4]},
-            {'id': 6, 'value': 'F', 'children': [5]}
-        ]
-        result = {
-                 1: {'neighbors': set(), 'value': 'A'},
-                 2: {'neighbors': set([1]), 'value': 'B'},
-                 3: {'neighbors': set([1]), 'value': 'C'},
-                 4: {'neighbors': set([1]), 'value': 'D'},
-                 5: {'neighbors': set([3]), 'value': 'E'},
-                 6: {'neighbors': set([5]), 'value': 'F'}}
-        assert(g.reversedEdges(rootId=1) == result)
-
-    def test_17_leafPaths(self):
+    def test_16_leafPaths(self):
         """Find leaf path From Node 1 {1:A} in example two """
         nodes = [
             {'id': 1, 'value': 'A', 'children': [2, 3]},
@@ -381,7 +352,7 @@ class TestGraphius(unittest.TestCase):
                     ['H', 'C', 'E', 'X']]
         assert(g.leafPaths(8) == result)
 
-    def test_18_isSameTree(self):
+    def test_17_isSameTree(self):
         """ test isSameTree for two trees with common node
         (test fix for same node) """
         nodes = [
@@ -400,6 +371,27 @@ class TestGraphius(unittest.TestCase):
         ]
         g = graphius.Graphius(nodes)
         assert(g.isSameTree(9, 3))
+
+    def test_18_reversedEdges(self):
+        """ Test reversedEdges without rootId """
+        nodes = [
+            {'id': 1, 'value': 'A', 'children': [2, 3, 4]},
+            {'id': 2, 'value': 'B', 'children': []},
+            {'id': 3, 'value': 'C', 'children': [5]},
+            {'id': 4, 'value': 'D', 'children': []},
+            {'id': 5, 'value': 'E', 'children': [6]},
+            {'id': 6, 'value': 'F', 'children': []}
+        ]
+        g = graphius.Graphius(nodes)
+
+        result = {
+                 1: {'neighbors': set(), 'value': 'A'},
+                 2: {'neighbors': set([1]), 'value': 'B'},
+                 3: {'neighbors': set([1]), 'value': 'C'},
+                 4: {'neighbors': set([1]), 'value': 'D'},
+                 5: {'neighbors': set([3]), 'value': 'E'},
+                 6: {'neighbors': set([5]), 'value': 'F'}}
+        assert(g.reversedEdges() == result)
 
     # def test_command_line_interface(self):
     #     """Test the CLI."""

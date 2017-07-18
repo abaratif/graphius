@@ -147,34 +147,51 @@ class Graphius(object):
                 # All neighbor pairs verified
                 return True
 
-    def reversedEdges(self, rootId):
+    def reversedEdges(self):
+        """ Return a graph with reversed edges, not given a root.
+        Use a dummy root node instead, in case of multiple
+        connected components
         """
-            Given a root to a graph,
-            Reverse the directed edges of a graph
-        """
+        self.nodes[-1] = {
+            'value': 'dummy',
+            'neighbors': set()
+        }
+        for nodeId in self.nodes.keys():
+            if nodeId != -1:
+                self.nodes[-1]['neighbors'].add(nodeId)
+
         newNodes = {}
-        self.reversedEdgesHelper(rootId, newNodes)
+        self.reversedEdgesHelper(-1, newNodes)
+        for nodeId in newNodes.keys():
+            if -1 in newNodes[nodeId]['neighbors']:
+                newNodes[nodeId]['neighbors'].remove(-1)
+        del newNodes[-1]
         return newNodes
 
-    def reversedEdgesHelper(self, rootId, newNodes):
+    def reversedEdgesHelper(self, rootId, newNodes, covered=set()):
         """
             Given a root to a graph,
             Reverse the directed edges of a graph
         """
+        # print("Got a call to reversedEdgesHelper with rootId={}".format(rootId))
 
-        newNodes[rootId] = {
+        if rootId not in covered:
+            newNodes[rootId] = {
                 'value': self.nodes[rootId]['value'],
                 'neighbors': set()
             }
+            # Base case, leaf node
+            # if not self.nodes[rootId]['neighbors']:
+            #
+            #     return
 
-        # Base case, leaf node
-        if not self.nodes[rootId]['neighbors']:
+            # Recursively recurse and add all other edges
+            for neighbor in self.nodes[rootId]['neighbors']:
+                self.reversedEdgesHelper(neighbor, newNodes)
+                newNodes[neighbor]['neighbors'].add(rootId)
+            covered.add(rootId)
+            # print("Covered is now {}".format(covered))
             return
-
-        # Recursively recurse and add all other edges
-        for neighbor in self.nodes[rootId]['neighbors']:
-            self.reversedEdgesHelper(neighbor, newNodes)
-            newNodes[neighbor]['neighbors'].add(rootId)
 
     def findSameSubtrees(self):
         """ Brute force O(n^2) method to find all similar subtrees
