@@ -165,15 +165,45 @@ class Graphius(object):
                     collapsable[i + 1] = [j + 1]
         return collapsable
 
-    def mergeSubtrees(self):
-        mergePairs = self.findSameSubtrees()
-        self.addDummyNode()
+    def markMerged(self, rootId):
+        """ Mark everything in a subtree w/ root as merged """
+        self.nodes[rootId]['safe'] = False
+        for neighbor in self.nodes[rootId]['neighbors']:
+            self.markMerged(neighbor)
 
-        # The dummy node exists
-        assert(self.nodes[-1])
+    # def mergeSubtrees(self):
+    #     """ Try to merge all similar subtrees in graph"""
+    #     mergePairs = self.findSameSubtrees()
+    #     self.addDummyNode()
+    #
+    #     # The dummy node exists
+    #     assert(self.nodes[-1])
+    #
+    #     self.mergeHelper(rootId, mergePairs)
+    #
+    #     self.removeDummyNode()
 
+    # def mergeHelper(self, rootId, mergePairs):
+    #     """ Helper method to recursively merge subtrees """
+    #     for neighbor in self.nodes[rootId]['neighbors']:
+    #         if self.nodes[neighbor]['safe']:  # if not marked for del
+    #             if neighbor in mergePairs:
+    #                 print("Merging... updating {}s ref from {} to {}".format(
+    #                     rootId,
+    #                     neighbor,
+    #                     mergePairs[neighbor]
+    #                 ))
+    #                 # Remove ref to old subtree, and update w/ new ref
+    #                 self.nodes[rootId]['neighbors'].remove(neighbor)
+    #                 self.nodes[rootId]['neighbors'].add(mergePairs[neighbor])
+    #                 # Recursively delete everything else
+    #                 self.deleteSubtree(rootId)
+    #
+    #             else:
+    #                 # recurse
+    #                 self.mergeHelper(neighbor, mergePairs)
+    #     return
 
-        self.removeDummyNode()
 
 
 

@@ -397,8 +397,8 @@ class TestGraphius(unittest.TestCase):
         g.reverseEdges()
         assert(g.nodes == result)
 
-    def test_19_mergeSubtrees(self):
-        """ Test mergeSubtrees for example 1 """
+    def test_19_markMerged(self):
+        """ Test marking example 1 subtree as merged """
         nodes = [
             {'id': 1, 'value': 'A', 'children': [2, 3]},
             {'id': 2, 'value': 'B', 'children': []},
@@ -416,8 +416,32 @@ class TestGraphius(unittest.TestCase):
             {'id': 13, 'value': 'G', 'children': []}
         ]
         g = graphius.Graphius(nodes)
-        g.mergeSubtrees()
-        assert(False)
+        g.markMerged(3)
+        pprint.pprint(g.nodes)
+        assert(g.nodes[6]['safe'] is False)
+
+
+    # def test_25_mergeSubtrees(self):
+    #     """ Test mergeSubtrees for example 1 """
+    #     nodes = [
+    #         {'id': 1, 'value': 'A', 'children': [2, 3]},
+    #         {'id': 2, 'value': 'B', 'children': []},
+    #         {'id': 3, 'value': 'C', 'children': [4, 5]},
+    #         {'id': 4, 'value': 'E', 'children': [6]},
+    #         {'id': 5, 'value': 'D', 'children': [7]},
+    #         {'id': 6, 'value': 'G', 'children': []},
+    #         {'id': 7, 'value': 'F', 'children': []},
+    #         # Second half
+    #         {'id': 8, 'value': 'B', 'children': [9]},
+    #         {'id': 9, 'value': 'C', 'children': [10, 11]},
+    #         {'id': 10, 'value': 'D', 'children': [12]},
+    #         {'id': 11, 'value': 'E', 'children': [13]},
+    #         {'id': 12, 'value': 'F', 'children': []},
+    #         {'id': 13, 'value': 'G', 'children': []}
+    #     ]
+    #     g = graphius.Graphius(nodes)
+    #     g.mergeSubtrees()
+    #     assert(False)
         # assert(g.findSameSubtrees() == [
         #                                 [3, 9], [4, 11], [5, 10],
         #                                 [6, 13], [7, 12]])
