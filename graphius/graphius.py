@@ -13,7 +13,7 @@ class Graphius(object):
     """
     def __init__(self, data):
         self.data = data
-        self.nodes = {}
+        self.nodes = {}  # Verticies
         # self.mapping = {}
         self.parse()
 

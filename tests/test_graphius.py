@@ -7,6 +7,7 @@
 import unittest
 
 from graphius import graphius
+from graphius import node
 from pprint import pprint
 
 
@@ -299,7 +300,38 @@ class TestGraphius(unittest.TestCase):
         g.reverseEdges()
         assert(g.nodes == result)
 
-    def test_19_markMerged(self):
+    def test_19_node(self):
+        """ Test basic creation of nodes """
+        node1 = node.GraphiusNode(id=1, value='A')
+        node2 = node.GraphiusNode(id=2, value='B')
+        node3 = node.GraphiusNode(id=3, value='C')
+        node4 = node.GraphiusNode(id=4, value='D')
+
+        node1.addNeighbor(node2)
+        node1.addNeighbor(node3)
+        node1.addNeighbor(node4)
+
+        assert(type(node1) == node.GraphiusNode)
+        # assert(node3 in node1.neighbors)
+
+    def test_20_node(self):
+        """ Test looping over neighbors """
+        node1 = node.GraphiusNode(id=1, value='A')
+        node2 = node.GraphiusNode(id=2, value='B')
+        node3 = node.GraphiusNode(id=3, value='C')
+        node4 = node.GraphiusNode(id=4, value='D')
+
+        node1.addNeighbor(node2)
+        node1.addNeighbor(node3)
+        node1.addNeighbor(node4)
+
+        neighborIds = {node.id for node in list(node1.neighbors)}
+        neighborVals = {node.value for node in list(node1.neighbors)}
+
+        assert(neighborIds == {2, 3, 4})
+        assert(neighborVals == {'B', 'C', 'D'})
+
+    # def test_25_markMerged(self):
         """ Test marking example 1 subtree as merged """
         nodes = self.EXAMPLE1
 
