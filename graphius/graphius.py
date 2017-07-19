@@ -166,8 +166,9 @@ class Graphius(object):
         self.mergeHelper(dummy, collapsable)
 
         # Regenerate trees
-        # newNodes = self.dfs(dummy)
-        # return
+        newNodes = self.dfs(dummy)
+        assert(-1 not in newNodes)
+        self.nodes = newNodes
 
     def dfs(self, root):
         """ Outer function for dfs """
@@ -192,17 +193,17 @@ class Graphius(object):
                 collapse it.
             Else
                 recursively search all *uncollapsed* children """
-        print("Checking all children of {}".format(root.id))
+        # print("Checking all children of {}".format(root.id))
         for neighbor in list(root.neighbors):
             if neighbor in collapsable:
                 # do the marking FIRST, very important so as to deal with
                 # potential of introducing cycles.
 
-                print("Marking {} subtree as merged, updating {}'s ref to {}'".format(
-                    neighbor.id,
-                    root.id,
-                    collapsable[neighbor].id
-                ))
+                # print("Marking {} subtree as merged, updating {}'s ref to {}'".format(
+                #     neighbor.id,
+                #     root.id,
+                #     collapsable[neighbor].id
+                # ))
 
                 self.markMerged(neighbor)
                 # Now update the ref
