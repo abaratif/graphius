@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import json
+from .node import GraphiusNode
 
 
 class Graphius(object):
@@ -12,22 +13,29 @@ class Graphius(object):
             containing a set of node ids
     """
     def __init__(self, data):
-        self.data = data
-        self.nodes = {}  # Verticies
-        # self.mapping = {}
-        self.parse()
+        self.nodes = {}  # Verticies, indexed by id
+        self.parse(data)
 
     def parse(self):
         """
             Given a json styled input, fill in the graphius data structures
         """
-        for node in self.data:
-            # Add the node data to nodes dict
-            self.nodes[node['id']] = {
-                'value': node['value'],
-                'neighbors': set(node['children']),
-                'safe': True
-            }
+        for nodeId in self.data:
+            # Create a new GraphiusNode object to represent this node
+            node = GraphiusNode(node['id'], node['value'])
+
+            for neigbhorId in node['neighbors']:
+                if neigbhorId not in self.nodes:
+                    # Create a neighbor node if doesn't already exist
+                    self.nodes[neigbhorId] = GraphiusNode(neigbhorId, self.data[neighborId]['value'])
+                # Add the neighbor
+                node.addNeighbor(self.nodes[neighborId])
+
+            # self.nodes[node['id']] = {
+            #     'value': node['value'],
+            #     'neighbors': set(node['children']),
+            #     'safe': True
+            # }
 
     def addDummyNode(self):
         """ Add a dummy node with id -1 and an outgoing edge to all other

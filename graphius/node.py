@@ -4,6 +4,7 @@ class GraphiusNode(object):
         self.id = id
         self.value = value
         self.neighbors = set()  # A set of other node ids, which are edges
+        self.safe = True  # Flag to be used in deletion
 
     def addNeighbor(self, node):
         """ Given another node, add it as a neighbor """
