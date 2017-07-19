@@ -86,28 +86,28 @@ class Graphius(object):
                                     paths,
                                     currPath + [self.nodes[rootId]['value']])
 
-    def isSameTree(self, nodeId1, nodeId2):
+    def isSameTree(self, node1, node2):
         """
             Given two nodes, determine if they represent the same subtree
             nodeId1: id of the first node in comparsion
             nodeId2: id of second node in comparsion
         """
-        # print("isSameTree call for IDs {} and {}".format(nodeId1, nodeId2))
-        assert(nodeId1 in self.nodes and nodeId2 in self.nodes)
-        if nodeId1 == nodeId2:
+        # print("isSameTree call for {} and {}".format(node1.id, node2.id))
+
+        if node1.id == node2.id:
             return True
-        if self.nodes[nodeId1]['value'] == self.nodes[nodeId2]['value']:
+        if node1.value == node2.value:
             # Compare children, in sorted order based on value
             node1Children = list(
                             sorted(
-                                    self.nodes[nodeId1]['neighbors'],
+                                    node1.neighbors,
                                     key=lambda node:
-                                    self.nodes[node]['value']))
+                                    node.value))
             node2Children = list(
                             sorted(
-                                    self.nodes[nodeId2]['neighbors'],
+                                    node2.neighbors,
                                     key=lambda node:
-                                    self.nodes[node]['value']))
+                                    node.value))
 
             if len(node1Children) == len(node2Children):
                 # For identical trees, A list of nieghbors

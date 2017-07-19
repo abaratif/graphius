@@ -67,146 +67,146 @@ class TestGraphius(unittest.TestCase):
         assert(g.nodes[1].value == 'A')
         assert(g.nodes[2] in g.nodes[1].neighbors)
 
-    # def test_2_isSameTree(self):
-    #     """Test isSameTree for two nodes with same value,
-    #     no children"""
-    #     nodes = [
-    #         {'id': 1, 'value': 'A', 'children': [2, 3]},
-    #         {'id': 2, 'value': 'B', 'children': []},
-    #         {'id': 3, 'value': 'C', 'children': [4]},
-    #         {'id': 4, 'value': 'B', 'children': []}
-    #     ]
-    #     g = Graphius(nodes)
-    #     # Nodes w/ id 2 and 4 are the same tree, when comparing values
-    #     assert(g.isSameTree(2, 4))
+    def test_2_isSameTree(self):
+        """Test isSameTree for two nodes with same value,
+        no children"""
+        nodes = [
+            {'id': 1, 'value': 'A', 'children': [2, 3]},
+            {'id': 2, 'value': 'B', 'children': []},
+            {'id': 3, 'value': 'C', 'children': [4]},
+            {'id': 4, 'value': 'B', 'children': []}
+        ]
+        g = Graphius(nodes)
+        # Nodes w/ id 2 and 4 are the same tree, when comparing values
+        assert(g.isSameTree(g.nodes[2], g.nodes[4]))
+
+    def test_3_isSameTree(self):
+        """Test isSameTree for two nodes with same value,
+        both having one child"""
+        nodes = [
+            {'id': 1, 'value': 'A', 'children': [2, 3]},
+            {'id': 2, 'value': 'B', 'children': [5]},
+            {'id': 3, 'value': 'C', 'children': [4]},
+            {'id': 4, 'value': 'B', 'children': [5]},
+            {'id': 5, 'value': 'D', 'children': []},
+        ]
+        g = Graphius(nodes)
+        # Nodes w/ id 2 and 4 are the same tree, when comparing values
+        assert(g.isSameTree(g.nodes[2], g.nodes[4]))
+
+    def test_4_isSameTree(self):
+        """Test isSameTree for two seperate, value-indentical trees
+        """
+        nodes = [
+            # First subtree
+            {'id': 1, 'value': 'A', 'children': [2, 3, 4]},
+            {'id': 2, 'value': 'B', 'children': []},
+            {'id': 3, 'value': 'C', 'children': [5, 6]},
+            {'id': 4, 'value': 'D', 'children': []},
+            {'id': 5, 'value': 'E', 'children': []},
+            {'id': 6, 'value': 'F', 'children': []},
+            # Second subtree
+            {'id': 7, 'value': 'A', 'children': [8, 9, 10]},
+            {'id': 8, 'value': 'B', 'children': []},
+            {'id': 9, 'value': 'C', 'children': [11, 12]},
+            {'id': 10, 'value': 'D', 'children': []},
+            {'id': 11, 'value': 'E', 'children': []},
+            {'id': 12, 'value': 'F', 'children': []}
+        ]
+        g = Graphius(nodes)
+        assert(g.isSameTree(g.nodes[1], g.nodes[7]))
+
+    def test_5_isSameTree(self):
+        """Test isSameTree for two seperate, non-indentical trees
+        """
+        nodes = [
+            # First subtree
+            {'id': 1, 'value': 'A', 'children': [2, 3, 4]},
+            {'id': 2, 'value': 'B', 'children': []},
+            {'id': 3, 'value': 'C', 'children': [5, 6]},
+            {'id': 4, 'value': 'D', 'children': []},
+            {'id': 5, 'value': 'E', 'children': []},
+            {'id': 6, 'value': 'F', 'children': []},
+            # Second subtree
+            {'id': 7, 'value': 'A', 'children': [8, 9, 10]},
+            {'id': 8, 'value': 'B', 'children': []},
+            {'id': 9, 'value': 'C', 'children': [11, 12]},
+            {'id': 10, 'value': 'D', 'children': []},
+            {'id': 11, 'value': 'E', 'children': []},
+            {'id': 12, 'value': 'Z', 'children': []}
+        ]
+        g = Graphius(nodes)
+        assert(g.isSameTree(g.nodes[1], g.nodes[7]) is False)
     #
-    # def test_3_isSameTree(self):
-    #     """Test isSameTree for two nodes with same value,
-    #     both having one child"""
-    #     nodes = [
-    #         {'id': 1, 'value': 'A', 'children': [2, 3]},
-    #         {'id': 2, 'value': 'B', 'children': [5]},
-    #         {'id': 3, 'value': 'C', 'children': [4]},
-    #         {'id': 4, 'value': 'B', 'children': [5]},
-    #         {'id': 5, 'value': 'D', 'children': []},
-    #     ]
-    #     g = Graphius(nodes)
-    #     # Nodes w/ id 2 and 4 are the same tree, when comparing values
-    #     assert(g.isSameTree(2, 4))
-    #
-    # def test_4_isSameTree(self):
-    #     """Test isSameTree for two seperate, value-indentical trees
-    #     """
-    #     nodes = [
-    #         # First subtree
-    #         {'id': 1, 'value': 'A', 'children': [2, 3, 4]},
-    #         {'id': 2, 'value': 'B', 'children': []},
-    #         {'id': 3, 'value': 'C', 'children': [5, 6]},
-    #         {'id': 4, 'value': 'D', 'children': []},
-    #         {'id': 5, 'value': 'E', 'children': []},
-    #         {'id': 6, 'value': 'F', 'children': []},
-    #         # Second subtree
-    #         {'id': 7, 'value': 'A', 'children': [8, 9, 10]},
-    #         {'id': 8, 'value': 'B', 'children': []},
-    #         {'id': 9, 'value': 'C', 'children': [11, 12]},
-    #         {'id': 10, 'value': 'D', 'children': []},
-    #         {'id': 11, 'value': 'E', 'children': []},
-    #         {'id': 12, 'value': 'F', 'children': []}
-    #     ]
-    #     g = Graphius(nodes)
-    #     assert(g.isSameTree(1, 7))
-    #
-    # def test_5_isSameTree(self):
-    #     """Test isSameTree for two seperate, non-indentical trees
-    #     """
-    #     nodes = [
-    #         # First subtree
-    #         {'id': 1, 'value': 'A', 'children': [2, 3, 4]},
-    #         {'id': 2, 'value': 'B', 'children': []},
-    #         {'id': 3, 'value': 'C', 'children': [5, 6]},
-    #         {'id': 4, 'value': 'D', 'children': []},
-    #         {'id': 5, 'value': 'E', 'children': []},
-    #         {'id': 6, 'value': 'F', 'children': []},
-    #         # Second subtree
-    #         {'id': 7, 'value': 'A', 'children': [8, 9, 10]},
-    #         {'id': 8, 'value': 'B', 'children': []},
-    #         {'id': 9, 'value': 'C', 'children': [11, 12]},
-    #         {'id': 10, 'value': 'D', 'children': []},
-    #         {'id': 11, 'value': 'E', 'children': []},
-    #         {'id': 12, 'value': 'Z', 'children': []}
-    #     ]
-    #     g = Graphius(nodes)
-    #     assert(g.isSameTree(1, 7) is False)
-    #
-    # def test_6_isSameTree(self):
-    #     """Test isSameTree for two seperate, ndentical trees, with neighbors
-    #     in different orders"""
-    #     nodes = [
-    #         # First subtree
-    #         {'id': 1, 'value': 'A', 'children': [4, 3, 2]},  # [D, C, B]
-    #         {'id': 2, 'value': 'B', 'children': []},
-    #         {'id': 3, 'value': 'C', 'children': [5, 6]},
-    #         {'id': 4, 'value': 'D', 'children': []},
-    #         {'id': 5, 'value': 'E', 'children': []},
-    #         {'id': 6, 'value': 'F', 'children': []},
-    #         # Second subtree
-    #         {'id': 7, 'value': 'A', 'children': [8, 9, 10]},  # [B, C, D]
-    #         {'id': 8, 'value': 'B', 'children': []},
-    #         {'id': 9, 'value': 'C', 'children': [11, 12]},
-    #         {'id': 10, 'value': 'D', 'children': []},
-    #         {'id': 11, 'value': 'E', 'children': []},
-    #         {'id': 12, 'value': 'F', 'children': []}
-    #     ]
-    #     g = Graphius(nodes)
-    #     assert(g.isSameTree(1, 7))
-    #
-    # def test_7_isSameTree(self):
-    #     """Test isSameTree for two trees with different depths"""
-    #     nodes = [
-    #         # First subtree
-    #         {'id': 1, 'value': 'A', 'children': [2, 3, 4]},
-    #         {'id': 2, 'value': 'B', 'children': []},
-    #         {'id': 3, 'value': 'C', 'children': [5]},
-    #         {'id': 4, 'value': 'D', 'children': []},
-    #         {'id': 5, 'value': 'E', 'children': [6]},
-    #         {'id': 6, 'value': 'F', 'children': []},
-    #         # Second subtree
-    #         {'id': 7, 'value': 'A', 'children': [8, 9, 10]},
-    #         {'id': 8, 'value': 'B', 'children': []},
-    #         {'id': 9, 'value': 'C', 'children': [11]},
-    #         {'id': 10, 'value': 'D', 'children': []},
-    #         {'id': 11, 'value': 'E', 'children': []}
-    #     ]
-    #     g = Graphius(nodes)
-    #     assert(g.isSameTree(1, 7) is False)
-    #
-    # def test_8_isSameTree(self):
-    #     """ Test isSameTree on the D->F subtrees in example one """
-    #     nodes = self.EXAMPLE1
-    #
-    #     g = Graphius(nodes)
-    #     assert(g.isSameTree(5, 10) is True)
-    #
+    def test_6_isSameTree(self):
+        """Test isSameTree for two seperate, ndentical trees, with neighbors
+        in different orders"""
+        nodes = [
+            # First subtree
+            {'id': 1, 'value': 'A', 'children': [4, 3, 2]},  # [D, C, B]
+            {'id': 2, 'value': 'B', 'children': []},
+            {'id': 3, 'value': 'C', 'children': [5, 6]},
+            {'id': 4, 'value': 'D', 'children': []},
+            {'id': 5, 'value': 'E', 'children': []},
+            {'id': 6, 'value': 'F', 'children': []},
+            # Second subtree
+            {'id': 7, 'value': 'A', 'children': [8, 9, 10]},  # [B, C, D]
+            {'id': 8, 'value': 'B', 'children': []},
+            {'id': 9, 'value': 'C', 'children': [11, 12]},
+            {'id': 10, 'value': 'D', 'children': []},
+            {'id': 11, 'value': 'E', 'children': []},
+            {'id': 12, 'value': 'F', 'children': []}
+        ]
+        g = Graphius(nodes)
+        assert(g.isSameTree(g.nodes[1], g.nodes[7]))
+
+    def test_7_isSameTree(self):
+        """Test isSameTree for two trees with different depths"""
+        nodes = [
+            # First subtree
+            {'id': 1, 'value': 'A', 'children': [2, 3, 4]},
+            {'id': 2, 'value': 'B', 'children': []},
+            {'id': 3, 'value': 'C', 'children': [5]},
+            {'id': 4, 'value': 'D', 'children': []},
+            {'id': 5, 'value': 'E', 'children': [6]},
+            {'id': 6, 'value': 'F', 'children': []},
+            # Second subtree
+            {'id': 7, 'value': 'A', 'children': [8, 9, 10]},
+            {'id': 8, 'value': 'B', 'children': []},
+            {'id': 9, 'value': 'C', 'children': [11]},
+            {'id': 10, 'value': 'D', 'children': []},
+            {'id': 11, 'value': 'E', 'children': []}
+        ]
+        g = Graphius(nodes)
+        assert(g.isSameTree(g.nodes[1], g.nodes[7]) is False)
+
+    def test_8_isSameTree(self):
+        """ Test isSameTree on the D->F subtrees in example one """
+        nodes = self.EXAMPLE1
+
+        g = Graphius(nodes)
+        assert(g.isSameTree(g.nodes[5], g.nodes[10]))
+
     # def test_9_isSameTree(self):
     #     """ Test isSameTree on the C rooted subtrees in example one """
     #     nodes = self.EXAMPLE1
     #
     #     g = Graphius(nodes)
-    #     assert(g.isSameTree(3, 9) is True)
+    #     assert(g.isSameTree(g.nodes[3], g.nodes[9]))
     #
     # def test_10_isSameTree(self):
     #     """ Test isSameTree on the C rooted subtrees in example two """
     #     nodes = self.EXAMPLE2
     #
     #     g = Graphius(nodes)
-    #     assert(g.isSameTree(3, 9) is False)
+    #     assert(g.isSameTree(g.nodes[3], g.nodes[9]) is False)
     #
     # def test_11_isSameTree(self):
     #     """ Test isSameTree on the D rooted subtrees in example two """
     #     nodes = self.EXAMPLE2
     #
     #     g = Graphius(nodes)
-    #     assert(g.isSameTree(5, 10) is True)
+    #     assert(g.isSameTree(g.nodes[5], g.nodes[10]))
     #
     # def test_12_findSameSubtrees(self):
     #     """ Test findSameSubtrees for example 2 """
@@ -259,25 +259,25 @@ class TestGraphius(unittest.TestCase):
     #         ['H', 'C', 'E', 'X']]
     #     assert(g.leafPaths(8) == result)
     #
-    # def test_17_isSameTree(self):
-    #     """ test isSameTree for two trees with common node
-    #     (test fix for same node) """
-    #     nodes = [
-    #         {'id': 1, 'value': 'A', 'children': [2, 3]},
-    #         {'id': 2, 'value': 'B', 'children': []},
-    #         {'id': 3, 'value': 'C', 'children': [4, 5]},
-    #         {'id': 5, 'value': 'D', 'children': [7]},
-    #         {'id': 4, 'value': 'E', 'children': [6]},
-    #         {'id': 6, 'value': 'G', 'children': []},
-    #         {'id': 7, 'value': 'F', 'children': []},
-    #         # Second half
-    #         {'id': 8, 'value': 'H', 'children': [9]},
-    #         {'id': 9, 'value': 'C', 'children': [5, 11]},
-    #         {'id': 11, 'value': 'E', 'children': [13]},
-    #         {'id': 13, 'value': 'G', 'children': []}
-    #     ]
-    #     g = Graphius(nodes)
-    #     assert(g.isSameTree(9, 3))
+    def test_17_isSameTree(self):
+        """ test isSameTree for two trees with common node
+        (test fix for same node) """
+        nodes = [
+            {'id': 1, 'value': 'A', 'children': [2, 3]},
+            {'id': 2, 'value': 'B', 'children': []},
+            {'id': 3, 'value': 'C', 'children': [4, 5]},
+            {'id': 5, 'value': 'D', 'children': [7]},
+            {'id': 4, 'value': 'E', 'children': [6]},
+            {'id': 6, 'value': 'G', 'children': []},
+            {'id': 7, 'value': 'F', 'children': []},
+            # Second half
+            {'id': 8, 'value': 'H', 'children': [9]},
+            {'id': 9, 'value': 'C', 'children': [5, 11]},
+            {'id': 11, 'value': 'E', 'children': [13]},
+            {'id': 13, 'value': 'G', 'children': []}
+        ]
+        g = Graphius(nodes)
+        assert(g.isSameTree(g.nodes[9], g.nodes[3]))
     #
     # def test_18_reversedEdges(self):
     #     """ Test reversedEdges without rootId """
