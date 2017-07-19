@@ -6,7 +6,7 @@
 
 import unittest
 
-from Graphius import Graphius
+from graphius.graphius import Graphius
 from graphius.node import GraphiusNode
 from pprint import pprint
 
@@ -53,19 +53,20 @@ class TestGraphius(unittest.TestCase):
     def tearDown(self):
         """Tear down test fixtures, if any."""
 
-    # def test_1_read(self):
-    #     """Test reading in a graph from hash"""
-    #     nodes = [
-    #         {'id': 1, 'value': 'A', 'children': [2, 3]},
-    #         {'id': 2, 'value': 'B', 'children': []},
-    #         {'id': 3, 'value': 'C', 'children': [4]},
-    #         {'id': 4, 'value': 'B', 'children': []}
-    #     ]
-    #
-    #     g = Graphius(nodes)
-    #     # Test nodes
-    #     assert(g.nodes[1]['value'] == 'A')
-    #
+    def test_1_read(self):
+        """Test reading in a graph from hash"""
+        nodes = [
+            {'id': 1, 'value': 'A', 'children': [2, 3]},
+            {'id': 2, 'value': 'B', 'children': []},
+            {'id': 3, 'value': 'C', 'children': [4]},
+            {'id': 4, 'value': 'B', 'children': []}
+        ]
+
+        g = Graphius(nodes)
+        # Test nodes
+        assert(g.nodes[1].value == 'A')
+        assert(g.nodes[2] in g.nodes[1].neighbors)
+
     # def test_2_isSameTree(self):
     #     """Test isSameTree for two nodes with same value,
     #     no children"""

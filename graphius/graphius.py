@@ -16,26 +16,23 @@ class Graphius(object):
         self.nodes = {}  # Verticies, indexed by id
         self.parse(data)
 
-    def parse(self):
+    def parse(self, data):
         """
             Given a json styled input, fill in the graphius data structures
+            First, make every node without neighbor links. Then go back,
+            and add neighbor links
         """
-        for nodeId in self.data:
-            # Create a new GraphiusNode object to represent this node
-            node = GraphiusNode(node['id'], node['value'])
 
-            for neigbhorId in node['neighbors']:
-                if neigbhorId not in self.nodes:
-                    # Create a neighbor node if doesn't already exist
-                    self.nodes[neigbhorId] = GraphiusNode(neigbhorId, self.data[neighborId]['value'])
-                # Add the neighbor
-                node.addNeighbor(self.nodes[neighborId])
+        for node in data:
+            nodeObj = GraphiusNode(id=node['id'], value=node['value'])
+            self.nodes[nodeObj.id] = nodeObj
 
-            # self.nodes[node['id']] = {
-            #     'value': node['value'],
-            #     'neighbors': set(node['children']),
-            #     'safe': True
-            # }
+        # Create links to nieghbors:
+        for node in data:
+            nodeObj = self.nodes[node['id']]
+            for neighborId in node['children']:
+                nodeObj.addNeighbor(self.nodes[neighborId])
+
 
     def addDummyNode(self):
         """ Add a dummy node with id -1 and an outgoing edge to all other
