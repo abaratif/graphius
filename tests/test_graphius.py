@@ -339,6 +339,28 @@ class TestGraphius(unittest.TestCase):
                     (5, 'D'), (7, 'F'), (4, 'E'),
                     (3, 'C'), (6, 'G')})
 
+    def test_21_merge(self):
+        """ Test merge on example 2. Confirm subtree rooted at 1:A """
+        g = Graphius(self.EXAMPLE2)
+        g.merge()
+
+        treeNodesA = {
+            (node.id, node.value)
+            for key, node in g.dfs(g.nodes[1]).items()}
+        assert(treeNodesA == {
+                (2, 'B'), (4, 'E'), (1, 'A'), (6, 'G'),
+                (10, 'D'), (12, 'F'), (3, 'C')})
+
+    def test_22_merge(self):
+        """ Test merge on example 2. Confirm subtree rooted at 1:A """
+        g = Graphius(self.EXAMPLE2)
+        g.merge()
+        treeNodesH = {
+            (node.id, node.value)
+            for key, node in g.dfs(g.nodes[8]).items()}
+        assert(treeNodesH == {
+                (12, 'F'), (10, 'D'), (9, 'C'),
+                (11, 'E'), (8, 'H'), (13, 'X')})
     # def test_21_markMerged(self):
     #     """ Test marking example 1 subtree at 3:C as merged """
     #     nodes = self.EXAMPLE1
