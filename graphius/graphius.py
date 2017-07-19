@@ -33,22 +33,6 @@ class Graphius(object):
             for neighborId in node['children']:
                 nodeObj.addNeighbor(self.nodes[neighborId])
 
-    # def addDummyNode(self):
-    #     """ Add a dummy node with id -1 and an outgoing edge to all other
-    #     nodes """
-    #
-    #     self.nodes[-1] = GraphiusNode(-1, )
-    #     for nodeId in self.nodes.keys():
-    #         if nodeId != -1:
-    #             self.nodes[-1]['neighbors'].add(nodeId)
-    #
-    # def removeDummyNode(self):
-    #     """ Remove dummy nodes added using addDummyNode """
-    #     for nodeId in self.nodes.keys():
-    #         if -1 in self.nodes[nodeId]['neighbors']:
-    #             self.nodes[nodeId]['neighbors'].remove(-1)
-    #     del self.nodes[-1]
-    #
     # def leafPaths(self, rootId):
     #     """
     #         Given a root node Id, return an array of paths to leaf nodes
@@ -165,50 +149,72 @@ class Graphius(object):
             for j in range(i + 1, len(list(self.nodes))):
                 # Be careful, non-zero based indexing here
                 if self.isSameTree(self.nodes[i + 1], self.nodes[j + 1]):
+                    # Note time complexity of isSameTree
                     collapsable[self.nodes[i + 1]] = self.nodes[j + 1]
 
         return collapsable
 
-    # def markMerged(self, rootId):
-    #     """ Mark everything in a subtree w/ root as merged """
-    #     self.nodes[rootId]['safe'] = False
-    #     for neighbor in self.nodes[rootId]['neighbors']:
-    #         self.markMerged(neighbor)
+    def merge(self):
+        """ Function to merge all same subtrees in graph """
+        collapsable = self.findSameSubtrees()
 
-    # def mergeSubtrees(self):
-    #     """ Try to merge all similar subtrees in graph"""
-    #     mergePairs = self.findSameSubtrees()
-    #     self.addDummyNode()
-    #
-    #     # The dummy node exists
-    #     assert(self.nodes[-1])
-    #
-    #     self.mergeHelper(rootId, mergePairs)
-    #
-    #     self.removeDummyNode()
+        dummy = GraphiusNode(-1, None)
+        for i, node in self.nodes.items():
+            dummy.addNeighbor(node)
 
-    # def mergeHelper(self, rootId, mergePairs):
-    #     """ Helper method to recursively merge subtrees """
-    #     for neighbor in self.nodes[rootId]['neighbors']:
-    #         if self.nodes[neighbor]['safe']:  # if not marked for del
-    #             if neighbor in mergePairs:
-    #                 print("Merging... updating {}s ref from {} to {}".format(
-    #                     rootId,
-    #                     neighbor,
-    #                     mergePairs[neighbor]
-    #                 ))
-    #                 # Remove ref to old subtree, and update w/ new ref
-    #                 self.nodes[rootId]['neighbors'].remove(neighbor)
-    #                 self.nodes[rootId]['neighbors'].add(mergePairs[neighbor])
-    #                 # Recursively delete everything else
-    #                 self.deleteSubtree(rootId)
-    #
-    #             else:
-    #                 # recurse
-    #                 self.mergeHelper(neighbor, mergePairs)
-    #     return
+        # Perform the merge
+        self.mergeHelper(dummy, collapsable)
+
+        # Regenerate trees
+        # newNodes = self.dfs(dummy)
+        # return
+
+    def dfs(self, root):
+        """ Outer function for dfs """
+        result = {}
+        self.dfsHelper(root, result)
+        return result
+
+    def dfsHelper(self, root, nodes):
+        """ Given a root node, return a dict representing
+        all nodes in that subtree. Ignore dummy nodes """
+        if root.id > 0:
+            nodes[root.id] = root
+
+        for neighbor in root.neighbors:
+            self.dfsHelper(neighbor, nodes)
 
 
+    def mergeHelper(self, root, collapsable):
+        """ Helper function for merges.
+        Given a root, and a list of collapsable subtrees, for each neighbor
+            if any child of the root is in the list,
+                collapse it.
+            Else
+                recursively search all *uncollapsed* children """
+        print("Checking all children of {}".format(root.id))
+        for neighbor in list(root.neighbors):
+            if neighbor in collapsable:
+                # do the marking FIRST, very important so as to deal with
+                # potential of introducing cycles.
 
+                print("Marking {} subtree as merged, updating {}'s ref to {}'".format(
+                    neighbor.id,
+                    root.id,
+                    collapsable[neighbor].id
+                ))
 
-    # def tryMerge(self, rootId, mergePairs):
+                self.markMerged(neighbor)
+                # Now update the ref
+                root.neighbors.remove(neighbor)
+                root.neighbors.add(collapsable[neighbor])
+            else:
+                self.mergeHelper(neighbor, collapsable)
+
+    def markMerged(self, root):
+        """ Given a root, recrusively mark that subtree
+        as merged for deletion """
+        root.safe = False
+        for neighbor in root.neighbors:
+            self.markMerged(neighbor)
+        return  # Base case will skip loop and jump here (leaf node)
