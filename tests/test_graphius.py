@@ -187,45 +187,53 @@ class TestGraphius(unittest.TestCase):
         g = Graphius(nodes)
         assert(g.isSameTree(g.nodes[5], g.nodes[10]))
 
-    # def test_9_isSameTree(self):
-    #     """ Test isSameTree on the C rooted subtrees in example one """
-    #     nodes = self.EXAMPLE1
-    #
-    #     g = Graphius(nodes)
-    #     assert(g.isSameTree(g.nodes[3], g.nodes[9]))
-    #
-    # def test_10_isSameTree(self):
-    #     """ Test isSameTree on the C rooted subtrees in example two """
-    #     nodes = self.EXAMPLE2
-    #
-    #     g = Graphius(nodes)
-    #     assert(g.isSameTree(g.nodes[3], g.nodes[9]) is False)
-    #
-    # def test_11_isSameTree(self):
-    #     """ Test isSameTree on the D rooted subtrees in example two """
-    #     nodes = self.EXAMPLE2
-    #
-    #     g = Graphius(nodes)
-    #     assert(g.isSameTree(g.nodes[5], g.nodes[10]))
-    #
-    # def test_12_findSameSubtrees(self):
-    #     """ Test findSameSubtrees for example 2 """
-    #     nodes = self.EXAMPLE2
-    #
-    #     g = Graphius(nodes)
-    #     assert(g.findSameSubtrees() == {5: [10], 7: [12]})
-    #
-    # def test_13_findSameSubtrees(self):
-    #     """ Test findSameSubtrees for example 1 """
-    #     nodes = self.EXAMPLE1
-    #
-    #     g = Graphius(nodes)
-    #     assert(g.findSameSubtrees() == {
-    #         3: [9],
-    #         4: [11],
-    #         5: [10],
-    #         6: [13],
-    #         7: [12]})
+    def test_9_isSameTree(self):
+        """ Test isSameTree on the C rooted subtrees in example one """
+        nodes = self.EXAMPLE1
+
+        g = Graphius(nodes)
+        assert(g.isSameTree(g.nodes[3], g.nodes[9]))
+
+    def test_10_isSameTree(self):
+        """ Test isSameTree on the C rooted subtrees in example two """
+        nodes = self.EXAMPLE2
+
+        g = Graphius(nodes)
+        assert(g.isSameTree(g.nodes[3], g.nodes[9]) is False)
+
+    def test_11_isSameTree(self):
+        """ Test isSameTree on the D rooted subtrees in example two """
+        nodes = self.EXAMPLE2
+
+        g = Graphius(nodes)
+        assert(g.isSameTree(g.nodes[5], g.nodes[10]))
+
+    def test_12_findSameSubtrees(self):
+        """ Test findSameSubtrees for example 2 """
+        nodes = self.EXAMPLE2
+
+        g = Graphius(nodes)
+        result = g.findSameSubtrees()
+
+        assert(result[g.nodes[5]] == g.nodes[10])
+        assert(result[g.nodes[7]] == g.nodes[12])
+
+        # assert(g.findSameSubtrees() == {5: [10], 7: [12]})
+
+    def test_13_findSameSubtrees(self):
+        """ Test findSameSubtrees for example 1 """
+        nodes = self.EXAMPLE1
+
+        g = Graphius(nodes)
+        result = g.findSameSubtrees()
+
+        assert(
+            result[g.nodes[3]] == g.nodes[9] and
+            result[g.nodes[4]] == g.nodes[11] and
+            result[g.nodes[5]] == g.nodes[10] and
+            result[g.nodes[6]] == g.nodes[13] and
+            result[g.nodes[7]] == g.nodes[12]
+            )
     #
     # def test_14_leafPaths(self):
     #     """ Find leaf paths from Node 1 {1: A} in example 1 """

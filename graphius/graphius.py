@@ -33,58 +33,54 @@ class Graphius(object):
             for neighborId in node['children']:
                 nodeObj.addNeighbor(self.nodes[neighborId])
 
-
-    def addDummyNode(self):
-        """ Add a dummy node with id -1 and an outgoing edge to all other
-        nodes """
-
-        self.nodes[-1] = {
-            'value': 'dummy',
-            'neighbors': set()
-        }
-        for nodeId in self.nodes.keys():
-            if nodeId != -1:
-                self.nodes[-1]['neighbors'].add(nodeId)
-
-    def removeDummyNode(self):
-        """ Remove dummy nodes added using addDummyNode """
-        for nodeId in self.nodes.keys():
-            if -1 in self.nodes[nodeId]['neighbors']:
-                self.nodes[nodeId]['neighbors'].remove(-1)
-        del self.nodes[-1]
-
-    def leafPaths(self, rootId):
-        """
-            Given a root node Id, return an array of paths to leaf nodes
-            The path is given as a list of node *values*
-        """
-        paths = []
-        self.leafPathsHelper(rootId, paths)
-        return paths
-
-    def leafPathsHelper(self, rootId, paths, currPath=[]):
-        """
-            Given a root node Id, return an array of paths to leaf nodes
-            The path is given as a list of node *values*
-        """
-        if not rootId:
-            # Reached end of path
-            paths.append(currPath)
-            return
-
-        # Continue search
-        if not self.nodes[rootId]['neighbors']:
-            # Leaf node
-            self.leafPathsHelper(
-                                None,
-                                paths,
-                                currPath + [self.nodes[rootId]['value']])
-        else:
-            for neighbor in self.nodes[rootId]['neighbors']:
-                self.leafPathsHelper(
-                                    neighbor,
-                                    paths,
-                                    currPath + [self.nodes[rootId]['value']])
+    # def addDummyNode(self):
+    #     """ Add a dummy node with id -1 and an outgoing edge to all other
+    #     nodes """
+    #
+    #     self.nodes[-1] = GraphiusNode(-1, )
+    #     for nodeId in self.nodes.keys():
+    #         if nodeId != -1:
+    #             self.nodes[-1]['neighbors'].add(nodeId)
+    #
+    # def removeDummyNode(self):
+    #     """ Remove dummy nodes added using addDummyNode """
+    #     for nodeId in self.nodes.keys():
+    #         if -1 in self.nodes[nodeId]['neighbors']:
+    #             self.nodes[nodeId]['neighbors'].remove(-1)
+    #     del self.nodes[-1]
+    #
+    # def leafPaths(self, rootId):
+    #     """
+    #         Given a root node Id, return an array of paths to leaf nodes
+    #         The path is given as a list of node *values*
+    #     """
+    #     paths = []
+    #     self.leafPathsHelper(rootId, paths)
+    #     return paths
+    #
+    # def leafPathsHelper(self, rootId, paths, currPath=[]):
+    #     """
+    #         Given a root node Id, return an array of paths to leaf nodes
+    #         The path is given as a list of node *values*
+    #     """
+    #     if not rootId:
+    #         # Reached end of path
+    #         paths.append(currPath)
+    #         return
+    #
+    #     # Continue search
+    #     if not self.nodes[rootId]['neighbors']:
+    #         # Leaf node
+    #         self.leafPathsHelper(
+    #                             None,
+    #                             paths,
+    #                             currPath + [self.nodes[rootId]['value']])
+    #     else:
+    #         for neighbor in self.nodes[rootId]['neighbors']:
+    #             self.leafPathsHelper(
+    #                                 neighbor,
+    #                                 paths,
+    #                                 currPath + [self.nodes[rootId]['value']])
 
     def isSameTree(self, node1, node2):
         """
@@ -120,61 +116,64 @@ class Graphius(object):
                 # All neighbor pairs verified
                 return True
 
-    def reverseEdges(self):
-        """ Return a graph with reversed edges, not given a root.
-        Use a dummy root node instead, in case of multiple
-        connected components
-        """
-        self.addDummyNode()
+    # def reverseEdges(self):
+    #     """ Return a graph with reversed edges, not given a root.
+    #     Use a dummy root node instead, in case of multiple
+    #     connected components
+    #     """
+    #     self.addDummyNode()
+    #
+    #     newNodes = {}
+    #     self.reversedEdgesHelper(-1, newNodes)
+    #
+    #     self.nodes = newNodes
+    #
+    #     self.removeDummyNode()
 
-        newNodes = {}
-        self.reversedEdgesHelper(-1, newNodes)
-
-        self.nodes = newNodes
-
-        self.removeDummyNode()
-
-    def reversedEdgesHelper(self, rootId, newNodes, covered=set()):
-        """
-            Given a root to a graph,
-            Reverse the directed edges of a graph
-        """
-
-        if rootId not in covered:
-            newNodes[rootId] = {
-                'value': self.nodes[rootId]['value'],
-                'neighbors': set()
-            }
-            # Base case, leaf node
-            # if not self.nodes[rootId]['neighbors']:
-            #
-            #     return
-
-            # Recursively recurse and add all other edges
-            for neighbor in self.nodes[rootId]['neighbors']:
-                self.reversedEdgesHelper(neighbor, newNodes)
-                newNodes[neighbor]['neighbors'].add(rootId)
-            covered.add(rootId)
-            # print("Covered is now {}".format(covered))
-            return
+    # def reversedEdgesHelper(self, rootId, newNodes, covered=set()):
+    #     """
+    #         Given a root to a graph,
+    #         Reverse the directed edges of a graph
+    #     """
+    #
+    #     if rootId not in covered:
+    #         newNodes[rootId] = {
+    #             'value': self.nodes[rootId]['value'],
+    #             'neighbors': set()
+    #         }
+    #         # Base case, leaf node
+    #         # if not self.nodes[rootId]['neighbors']:
+    #         #
+    #         #     return
+    #
+    #         # Recursively recurse and add all other edges
+    #         for neighbor in self.nodes[rootId]['neighbors']:
+    #             self.reversedEdgesHelper(neighbor, newNodes)
+    #             newNodes[neighbor]['neighbors'].add(rootId)
+    #         covered.add(rootId)
+    #         # print("Covered is now {}".format(covered))
+    #         return
 
     def findSameSubtrees(self):
-        """ Brute force method to find all similar subtrees
+        """ Brute force method to find all similar subtrees.
+            Returns a key value pair of dupli
         """
 
         collapsable = {}
 
-        for i in range(0, len(self.nodes.keys())):
-            for j in range(i + 1, len(self.nodes.keys())):
-                if self.isSameTree(i + 1, j + 1):
-                    collapsable[i + 1] = [j + 1]
+        for i in range(0, len(list(self.nodes))):
+            for j in range(i + 1, len(list(self.nodes))):
+                # Be careful, non-zero based indexing here
+                if self.isSameTree(self.nodes[i + 1], self.nodes[j + 1]):
+                    collapsable[self.nodes[i + 1]] = self.nodes[j + 1]
+
         return collapsable
 
-    def markMerged(self, rootId):
-        """ Mark everything in a subtree w/ root as merged """
-        self.nodes[rootId]['safe'] = False
-        for neighbor in self.nodes[rootId]['neighbors']:
-            self.markMerged(neighbor)
+    # def markMerged(self, rootId):
+    #     """ Mark everything in a subtree w/ root as merged """
+    #     self.nodes[rootId]['safe'] = False
+    #     for neighbor in self.nodes[rootId]['neighbors']:
+    #         self.markMerged(neighbor)
 
     # def mergeSubtrees(self):
     #     """ Try to merge all similar subtrees in graph"""
