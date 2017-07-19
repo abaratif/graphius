@@ -33,39 +33,6 @@ class Graphius(object):
             for neighborId in node['children']:
                 nodeObj.addNeighbor(self.nodes[neighborId])
 
-    # def leafPaths(self, rootId):
-    #     """
-    #         Given a root node Id, return an array of paths to leaf nodes
-    #         The path is given as a list of node *values*
-    #     """
-    #     paths = []
-    #     self.leafPathsHelper(rootId, paths)
-    #     return paths
-    #
-    # def leafPathsHelper(self, rootId, paths, currPath=[]):
-    #     """
-    #         Given a root node Id, return an array of paths to leaf nodes
-    #         The path is given as a list of node *values*
-    #     """
-    #     if not rootId:
-    #         # Reached end of path
-    #         paths.append(currPath)
-    #         return
-    #
-    #     # Continue search
-    #     if not self.nodes[rootId]['neighbors']:
-    #         # Leaf node
-    #         self.leafPathsHelper(
-    #                             None,
-    #                             paths,
-    #                             currPath + [self.nodes[rootId]['value']])
-    #     else:
-    #         for neighbor in self.nodes[rootId]['neighbors']:
-    #             self.leafPathsHelper(
-    #                                 neighbor,
-    #                                 paths,
-    #                                 currPath + [self.nodes[rootId]['value']])
-
     def isSameTree(self, node1, node2):
         """
             Given two nodes, determine if they represent the same subtree
@@ -99,44 +66,6 @@ class Graphius(object):
                         return False
                 # All neighbor pairs verified
                 return True
-
-    # def reverseEdges(self):
-    #     """ Return a graph with reversed edges, not given a root.
-    #     Use a dummy root node instead, in case of multiple
-    #     connected components
-    #     """
-    #     self.addDummyNode()
-    #
-    #     newNodes = {}
-    #     self.reversedEdgesHelper(-1, newNodes)
-    #
-    #     self.nodes = newNodes
-    #
-    #     self.removeDummyNode()
-
-    # def reversedEdgesHelper(self, rootId, newNodes, covered=set()):
-    #     """
-    #         Given a root to a graph,
-    #         Reverse the directed edges of a graph
-    #     """
-    #
-    #     if rootId not in covered:
-    #         newNodes[rootId] = {
-    #             'value': self.nodes[rootId]['value'],
-    #             'neighbors': set()
-    #         }
-    #         # Base case, leaf node
-    #         # if not self.nodes[rootId]['neighbors']:
-    #         #
-    #         #     return
-    #
-    #         # Recursively recurse and add all other edges
-    #         for neighbor in self.nodes[rootId]['neighbors']:
-    #             self.reversedEdgesHelper(neighbor, newNodes)
-    #             newNodes[neighbor]['neighbors'].add(rootId)
-    #         covered.add(rootId)
-    #         # print("Covered is now {}".format(covered))
-    #         return
 
     def findSameSubtrees(self):
         """ Brute force method to find all similar subtrees.
@@ -184,7 +113,6 @@ class Graphius(object):
 
         for neighbor in root.neighbors:
             self.dfsHelper(neighbor, nodes)
-
 
     def mergeHelper(self, root, collapsable):
         """ Helper function for merges.

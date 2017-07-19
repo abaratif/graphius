@@ -53,7 +53,7 @@ class TestGraphius(unittest.TestCase):
     def tearDown(self):
         """Tear down test fixtures, if any."""
 
-    def test_1_read(self):
+    def test_1_parse(self):
         """Test reading in a graph from hash"""
         nodes = [
             {'id': 1, 'value': 'A', 'children': [2, 3]},
@@ -338,3 +338,12 @@ class TestGraphius(unittest.TestCase):
         assert(result == {
                     (5, 'D'), (7, 'F'), (4, 'E'),
                     (3, 'C'), (6, 'G')})
+
+    # def test_21_markMerged(self):
+    #     """ Test marking example 1 subtree at 3:C as merged """
+    #     nodes = self.EXAMPLE1
+    #
+    #     g = Graphius(nodes)
+    #     g.markMerged(g.nodes[3])
+    #     # pprint(g.nodes)
+    #     assert(g.nodes[6].safe is False)
