@@ -153,7 +153,7 @@ class TestGraphius(unittest.TestCase):
         ]
         g = Graphius(nodes)
         assert(g.isSameTree(g.nodes[1], g.nodes[7]) is False)
-    #
+
     def test_6_isSameTree(self):
         """Test isSameTree for two seperate, ndentical trees, with neighbors
         in different orders"""
@@ -301,9 +301,6 @@ class TestGraphius(unittest.TestCase):
 
         assert(neighborIds == {2, 3, 4})
         assert(neighborVals == {'B', 'C', 'D'})
-    #
-
-
 
     def test_17_merge(self):
         """ Test merging similar subtrees in example 1.
@@ -342,6 +339,7 @@ class TestGraphius(unittest.TestCase):
         assert(self.nodeTuples(g.dfs(g.nodes[3]).values()) == {
                     (5, 'D'), (7, 'F'), (4, 'E'),
                     (3, 'C'), (6, 'G')})
+
     def test_21_merge(self):
         """ Test merge on example 2. Confirm subtree rooted at 1:A """
         g = Graphius(self.EXAMPLE2)

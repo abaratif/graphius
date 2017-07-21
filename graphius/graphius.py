@@ -108,7 +108,6 @@ class Graphius(object):
             return seen[root.value]
         return root
 
-
     def isSameTree(self, node1, node2):
         """
             Given two nodes, determine if they represent the same subtree
