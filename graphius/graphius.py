@@ -13,7 +13,8 @@ class Graphius(object):
             containing a set of node ids
     """
     def __init__(self, data):
-        self.nodes = {}  # Verticies, indexed by id
+        self.nodes = {}  # GraphiusNode objects, indexed by id
+        self.childNodes = {}  # GraphiusNode objects, indexed by id
         self.parse(data)
 
     def parse(self, data):
@@ -32,6 +33,14 @@ class Graphius(object):
             nodeObj = self.nodes[node['id']]
             for neighborId in node['children']:
                 nodeObj.addNeighbor(self.nodes[neighborId])
+                self.childNodes[neighborId] = self.nodes[neighborId]
+
+    def roots(self):
+        """ Return a set of root nodes of the graph """
+        return {
+                nodeObj for nodeId, nodeObj
+                in self.nodes.items()
+                if nodeId not in self.childNodes}
 
     def postOrderMerge(self, root=None):
 
@@ -57,11 +66,11 @@ class Graphius(object):
             resolvedNeighbor = self.postOrderMergeHelper(neighbor, seen)
 
             if neighbor != resolvedNeighbor:
-                print("Updating {}s neighbor ref from {} to {}".format(
-                    root.id,
-                    neighbor.id,
-                    resolvedNeighbor.id
-                ))
+                # print("Updating {}s neighbor ref from {} to {}".format(
+                #     root.id,
+                #     neighbor.id,
+                #     resolvedNeighbor.id
+                # ))
                 root.neighbors.remove(neighbor)
                 root.neighbors.add(resolvedNeighbor)
 

@@ -386,7 +386,13 @@ class TestGraphius(unittest.TestCase):
             seen[g.nodes[i].value] = g.nodes[i]
         assert(g.getEquivNode(g.nodes[1], seen) == g.nodes[1])
 
-    def test_25_postorderMerge(self):
+    def test_25_roots(self):
+        """ Test getting roots from example 1 """
+        g = Graphius(self.EXAMPLE1)
+        roots = g.roots()
+        assert(len(list(roots)) == 2)
+
+    def test_28_postorderMerge(self):
         """ Test merge for basic example, given root """
         nodes = [
             {'id': 0, 'value': 'Q', 'children': [1, 4]},  # New root
@@ -409,6 +415,7 @@ class TestGraphius(unittest.TestCase):
             for node in g.nodes[1].neighbors}
         assert(neigbhors0 == {'A'})
         assert(neigbhors1 == {'B', 'C'})
+
 
 
     # def test_25_postorderMerge(self):
