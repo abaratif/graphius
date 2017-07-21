@@ -361,6 +361,58 @@ class TestGraphius(unittest.TestCase):
         assert(treeNodesH == {
                 (12, 'F'), (10, 'D'), (9, 'C'),
                 (11, 'E'), (8, 'H'), (13, 'X')})
+
+    def test_23_getEquivNode(self):
+        """ Test getting two equiv nodes in example 1 """
+        g = Graphius(self.EXAMPLE1)
+        seen = {}
+        seen[g.nodes[7].value] = g.nodes[7]
+        assert(g.getEquivNode(g.nodes[12], seen) == g.nodes[7])
+
+    def test_24_getEquivNode(self):
+        """ Test getEquivNode with same value, different children """
+        nodes = [
+            {'id': 1, 'value': 'A', 'children': [2, 3]},
+            {'id': 2, 'value': 'B', 'children': []},
+            {'id': 3, 'value': 'C', 'children': []},
+            {'id': 4, 'value': 'A', 'children': [5, 6]},
+            {'id': 5, 'value': 'B', 'children': []},
+            {'id': 6, 'value': 'C', 'children': []}
+            ]
+
+        g = Graphius(nodes)
+        seen = {}
+        for i in range(1, 7):
+            seen[g.nodes[i].value] = g.nodes[i]
+        assert(g.getEquivNode(g.nodes[1], seen) == g.nodes[1])
+
+    def test_25_postorderMerge(self):
+        """ Test merge for basic example, given root """
+        nodes = [
+            {'id': 0, 'value': 'Q', 'children': [1, 4]},  # New root
+            {'id': 1, 'value': 'A', 'children': [2, 3]},
+            {'id': 2, 'value': 'B', 'children': []},
+            {'id': 3, 'value': 'C', 'children': []},
+            {'id': 4, 'value': 'A', 'children': [5, 6]},
+            {'id': 5, 'value': 'B', 'children': []},
+            {'id': 6, 'value': 'C', 'children': []}
+            ]
+        g = Graphius(nodes)
+        g.postOrderMerge(g.nodes[0])
+
+        # Check values only, id not relevant
+        neigbhors0 = {
+            node.value
+            for node in g.nodes[0].neighbors}
+        neigbhors1 = {
+            node.value
+            for node in g.nodes[1].neighbors}
+        assert(neigbhors0 == {'A'})
+        assert(neigbhors1 == {'B', 'C'})
+
+
+    # def test_25_postorderMerge(self):
+
     # def test_21_markMerged(self):
     #     """ Test marking example 1 subtree at 3:C as merged """
     #     nodes = self.EXAMPLE1

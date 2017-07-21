@@ -33,6 +33,61 @@ class Graphius(object):
             for neighborId in node['children']:
                 nodeObj.addNeighbor(self.nodes[neighborId])
 
+    def postOrderMerge(self, root=None):
+
+        # TODO: get root nodes
+        if not root:
+            assert(False)
+
+        seen = {}
+
+        self.postOrderMergeHelper(root, seen)
+
+    def postOrderMergeHelper(self, root, seen):
+        """ Given a root node and a dict of seen nodes,
+        recursively traverse all children.
+        If a recursive call returns a different child,
+        update that reference in the nieghbors set.
+        Finally, if another node that is equiv (same value and neigbhors)
+        as root has been seen, update the seen dict
+        """
+
+        # Check if each neighbor is collapsible
+        for neighbor in list(root.neighbors):
+            resolvedNeighbor = self.postOrderMergeHelper(neighbor, seen)
+
+            if neighbor != resolvedNeighbor:
+                print("Updating {}s neighbor ref from {} to {}".format(
+                    root.id,
+                    neighbor.id,
+                    resolvedNeighbor.id
+                ))
+                root.neighbors.remove(neighbor)
+                root.neighbors.add(resolvedNeighbor)
+
+        # Base case, no children
+
+        resolved = self.getEquivNode(root, seen)
+        # The above call either gets the same node, or another node with same
+        # val and identical children
+
+        # Update the ref in seen
+        seen[resolved.value] = resolved
+        return resolved
+
+    def getEquivNode(self, root, seen):
+        """
+        Given a root node, and a dict of nodes,
+        indexed by value
+        If another node with this root's has been seen,
+        and it is identical to root (Same neighbors), return it.
+        Otherwise, return root """
+
+        if root.value in seen and seen[root.value].neighbors == root.neighbors:
+            return seen[root.value]
+        return root
+
+
     def isSameTree(self, node1, node2):
         """
             Given two nodes, determine if they represent the same subtree
