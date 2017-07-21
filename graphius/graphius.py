@@ -42,15 +42,25 @@ class Graphius(object):
                 in self.nodes.items()
                 if nodeId not in self.childNodes}
 
-    def postOrderMerge(self, root=None):
+    def clean(self):
+        """ Method to get rid of any nodes that are no longer part of graph """
+        for nodeId in list(self.nodes.keys()):
+            if not self.nodes[nodeId].safe:
+                del self.nodes[nodeId]
 
-        # TODO: get root nodes
-        if not root:
-            assert(False)
+    def postOrderMerge(self):
+        """ Funciton to merge subtrees using helper below """
 
         seen = {}
+        roots = self.roots()
 
-        self.postOrderMergeHelper(root, seen)
+        # Run the merge starting at each root. Note that seen
+        # is presisted throughout.
+        for root in roots:
+            self.postOrderMergeHelper(root, seen)
+
+        # Clean out any dead nodes
+        self.clean()
 
     def postOrderMergeHelper(self, root, seen):
         """ Given a root node and a dict of seen nodes,
@@ -73,6 +83,8 @@ class Graphius(object):
                 # ))
                 root.neighbors.remove(neighbor)
                 root.neighbors.add(resolvedNeighbor)
+                # Mark the old node
+                neighbor.safe = False
 
         # Base case, no children
 

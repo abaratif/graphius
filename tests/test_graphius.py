@@ -47,6 +47,13 @@ class TestGraphius(unittest.TestCase):
         {'id': 13, 'value': 'X', 'children': []}
     ]
 
+    EXAMPLE3 = [
+        {'id': 1, 'value': 'A', 'children': [2, 3]},
+        {'id': 2, 'value': 'B', 'children': []},
+        {'id': 3, 'value': 'C', 'children': [4]},
+        {'id': 4, 'value': 'B', 'children': []},
+    ]
+
     def nodeTuples(self, nodes):
         """ Helper function to convert graphius nodes
         To (id, value) style tuples """
@@ -393,7 +400,7 @@ class TestGraphius(unittest.TestCase):
             (1, 'A'), (8, 'H')
         })
 
-    def test_27_postorderMerge(self):
+    def test_27_postOrderMerge(self):
         """ Test merge for basic example, given root """
         nodes = [
             {'id': 0, 'value': 'Q', 'children': [1, 4]},  # New root
@@ -405,20 +412,30 @@ class TestGraphius(unittest.TestCase):
             {'id': 6, 'value': 'C', 'children': []}
             ]
         g = Graphius(nodes)
-        g.postOrderMerge(g.nodes[0])
+        g.postOrderMerge()
 
-        assert('A' in self.nodeValues(g.nodes[0].neighbors))
-        assert('B' in self.nodeValues(g.nodes[1].neighbors))
-        assert('C' in self.nodeValues(g.nodes[1].neighbors))
+        assert({'A'} == self.nodeValues(g.nodes[0].neighbors))
 
+    def test_28_postOrderMerge(self):
+        """ Test merge for example 1 """
+        g = Graphius(self.EXAMPLE1)
+        g.postOrderMerge()
 
-    # def test_25_postorderMerge(self):
+        assert(len(g.nodes) == 8)
 
-    # def test_21_markMerged(self):
-    #     """ Test marking example 1 subtree at 3:C as merged """
-    #     nodes = self.EXAMPLE1
-    #
-    #     g = Graphius(nodes)
-    #     g.markMerged(g.nodes[3])
-    #     # pprint(g.nodes)
-    #     assert(g.nodes[6].safe is False)
+    def test_29_postOrderMerge(self):
+        """ Test merge for example 2"""
+        g = Graphius(self.EXAMPLE2)
+        g.postOrderMerge()
+
+        assert(len(g.nodes) == 11)
+        # Make sure there still are two distinct C nodes
+        assert(g.nodes[3].value == 'C')
+        assert(g.nodes[9].value == 'C')
+
+    def test_30_postOrderMerge(self):
+        g = Graphius(self.EXAMPLE3)
+        g.postOrderMerge()
+
+        assert(len(g.nodes) == 3)
+        assert(len(g.nodes[3].neighbors) == 1)
