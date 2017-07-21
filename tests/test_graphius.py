@@ -380,10 +380,20 @@ class TestGraphius(unittest.TestCase):
     def test_25_roots(self):
         """ Test getting roots from example 1 """
         g = Graphius(self.EXAMPLE1)
-        roots = g.roots()
-        assert(len(list(roots)) == 2)
 
-    def test_28_postorderMerge(self):
+        assert(self.nodeTuples(g.roots()) == {
+            (1, 'A'), (8, 'B')
+        })
+
+    def test_26_roots(self):
+        """ Test getting roots from example 2 """
+        g = Graphius(self.EXAMPLE2)
+
+        assert(self.nodeTuples(g.roots()) == {
+            (1, 'A'), (8, 'H')
+        })
+
+    def test_27_postorderMerge(self):
         """ Test merge for basic example, given root """
         nodes = [
             {'id': 0, 'value': 'Q', 'children': [1, 4]},  # New root
