@@ -47,6 +47,15 @@ class TestGraphius(unittest.TestCase):
         {'id': 13, 'value': 'X', 'children': []}
     ]
 
+    def nodeTuples(self, nodes):
+        """ Helper function to convert graphius nodes
+        To (id, value) style tuples """
+        return {(node.id, node.value) for node in nodes}
+
+    def nodeValues(self, nodes):
+        """ Returns a set of tuples of node values """
+        return {node.value for node in nodes}
+
     def setUp(self):
         """Set up test fixtures, if any."""
 
@@ -294,11 +303,8 @@ class TestGraphius(unittest.TestCase):
         Checking subtree rooted at 1:A """
         g = Graphius(self.EXAMPLE1)
         g.merge()
-        treeNodesA = {
-            (node.id, node.value)
-            for key, node in g.dfs(g.nodes[1]).items()}
-        assert(len(treeNodesA) == 7)
-        assert(treeNodesA == {
+
+        assert(self.nodeTuples(g.dfs(g.nodes[1]).values()) == {
             (10, 'D'), (13, 'G'), (9, 'C'), (1, 'A'),
             (11, 'E'), (12, 'F'), (2, 'B')
         })
@@ -308,11 +314,8 @@ class TestGraphius(unittest.TestCase):
         Checking subtree rooted at 8:B"""
         g = Graphius(self.EXAMPLE1)
         g.merge()
-        treeNodesB = {
-            (node.id, node.value)
-            for key, node in g.dfs(g.nodes[8]).items()}
 
-        assert(treeNodesB == {
+        assert(self.nodeTuples(g.dfs(g.nodes[8]).values()) == {
             (10, 'D'), (13, 'G'), (9, 'C'), (8, 'B'),
             (11, 'E'), (12, 'F')
         })
@@ -321,10 +324,7 @@ class TestGraphius(unittest.TestCase):
         """ DFS the subtree rooted at 1:A in example 1 """
         g = Graphius(self.EXAMPLE1)
 
-        result = {
-            (node.id, node.value)
-            for key, node in g.dfs(g.nodes[1]).items()}
-        assert(result == {
+        assert(self.nodeTuples(g.dfs(g.nodes[1]).values()) == {
                     (5, 'D'), (7, 'F'), (4, 'E'),
                     (2, 'B'), (3, 'C'), (6, 'G'), (1, 'A')})
 
@@ -332,22 +332,15 @@ class TestGraphius(unittest.TestCase):
         """ DFS the subtree rooted at 3:C in example 1 """
         g = Graphius(self.EXAMPLE1)
 
-        result = {
-            (node.id, node.value)
-            for key, node in g.dfs(g.nodes[3]).items()}
-        assert(result == {
+        assert(self.nodeTuples(g.dfs(g.nodes[3]).values()) == {
                     (5, 'D'), (7, 'F'), (4, 'E'),
                     (3, 'C'), (6, 'G')})
-
     def test_21_merge(self):
         """ Test merge on example 2. Confirm subtree rooted at 1:A """
         g = Graphius(self.EXAMPLE2)
         g.merge()
 
-        treeNodesA = {
-            (node.id, node.value)
-            for key, node in g.dfs(g.nodes[1]).items()}
-        assert(treeNodesA == {
+        assert(self.nodeTuples(g.dfs(g.nodes[1]).values()) == {
                 (2, 'B'), (4, 'E'), (1, 'A'), (6, 'G'),
                 (10, 'D'), (12, 'F'), (3, 'C')})
 
@@ -355,10 +348,8 @@ class TestGraphius(unittest.TestCase):
         """ Test merge on example 2. Confirm subtree rooted at 1:A """
         g = Graphius(self.EXAMPLE2)
         g.merge()
-        treeNodesH = {
-            (node.id, node.value)
-            for key, node in g.dfs(g.nodes[8]).items()}
-        assert(treeNodesH == {
+
+        assert(self.nodeTuples(g.dfs(g.nodes[8]).values()) == {
                 (12, 'F'), (10, 'D'), (9, 'C'),
                 (11, 'E'), (8, 'H'), (13, 'X')})
 
@@ -406,16 +397,9 @@ class TestGraphius(unittest.TestCase):
         g = Graphius(nodes)
         g.postOrderMerge(g.nodes[0])
 
-        # Check values only, id not relevant
-        neigbhors0 = {
-            node.value
-            for node in g.nodes[0].neighbors}
-        neigbhors1 = {
-            node.value
-            for node in g.nodes[1].neighbors}
-        assert(neigbhors0 == {'A'})
-        assert(neigbhors1 == {'B', 'C'})
-
+        assert('A' in self.nodeValues(g.nodes[0].neighbors))
+        assert('B' in self.nodeValues(g.nodes[1].neighbors))
+        assert('C' in self.nodeValues(g.nodes[1].neighbors))
 
 
     # def test_25_postorderMerge(self):
