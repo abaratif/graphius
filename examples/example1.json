@@ -1,5 +1,4 @@
-{
-	"nodes": [{
+[{
 			"id": 1,
 			"value": "A",
 			"children": [2, 3]
@@ -64,5 +63,4 @@
 			"value": "G",
 			"children": []
 		}
-	]
-}
+]

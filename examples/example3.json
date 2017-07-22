@@ -1,23 +1,21 @@
-{
-	"nodes": [{
-			"id": 1,
-			"value": "A",
-			"children": [2, 3]
-		},
-		{
-			"id": 2,
-			"value": "B",
-			"children": []
-		},
-		{
-			"id": 3,
-			"value": "C",
-			"children": [4]
-		},
-		{
-			"id": 4,
-			"value": "B",
-			"children": []
-		}
-	]
-}
+[{
+		"id": 1,
+		"value": "A",
+		"children": [2, 3]
+	},
+	{
+		"id": 2,
+		"value": "B",
+		"children": []
+	},
+	{
+		"id": 3,
+		"value": "C",
+		"children": [4]
+	},
+	{
+		"id": 4,
+		"value": "B",
+		"children": []
+	}
+]
