@@ -1,11 +1,12 @@
-# -*- coding: utf-8 -*-
+from sys import argv
 import json
 from graphius.graphius import Graphius
 from pprint import pprint
 
 def main(args=None):
     """ Main method for Graphius CLI """
-    FILEPATH = 'examples/example3.json'
+    FILEPATH = argv[1]
+
     with open(FILEPATH) as json_data:
         d = json.load(json_data)
         assert(type(d) is list)
