@@ -13,7 +13,7 @@ def main(args=None):
 
         g = Graphius(d)
         g.postOrderMerge()
-        pprint(g.getNodes())
+        print(json.dumps(g.getNodes()))
 
 if __name__ == "__main__":
     main()
