@@ -87,4 +87,4 @@ servedocs: docs ## compile the docs watching for changes
 # 	python setup.py install
 
 run:
-	python cli.py $(file)
+	@python cli.py $(file)
