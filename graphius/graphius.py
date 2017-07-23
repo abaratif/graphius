@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-import json
-from .node import GraphiusNode
+from graphius.node import GraphiusNode
 
 
 class Graphius(object):
@@ -34,6 +33,21 @@ class Graphius(object):
             for neighborId in node['children']:
                 nodeObj.addNeighbor(self.nodes[neighborId])
                 self.childNodes[neighborId] = self.nodes[neighborId]
+
+    def getNodes(self):
+        """ Function to get all the nodes of the graph.
+        returns a JSON style list of dicts with node data """
+        result = []
+        for nodeId, nodeObj in self.nodes.items():
+            # Cast object to dict, exclude 'safe' attrib
+            temp = {
+                key: value
+                for key, value in nodeObj.__dict__.items()
+                if key is not 'safe'}
+            # Convert neighbor node objects to ids
+            temp['neighbors'] = [neighbor.id for neighbor in nodeObj.neighbors]
+            result.append(temp)
+        return result
 
     def roots(self):
         """ Return a set of root nodes of the graph """
