@@ -5,6 +5,11 @@ from pprint import pprint
 
 def main(args=None):
     """ Main method for Graphius CLI """
+    if len(argv) != 2:
+        print("Error reading arguments")
+        return
+
+    assert(len(argv) == 2)
     FILEPATH = argv[1]
 
     with open(FILEPATH) as json_data:
